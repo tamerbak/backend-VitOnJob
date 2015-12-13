@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+		<property name="hibernate.connection.password">rachid</property>
+		<property name="hibernate.connection.username">postgres</property>
+		<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/vitonjob</property>
+
+		<!-- <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/vitonjob</property> -->
+		<!-- <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property> -->
+		<!-- <property name="hibernate.connection.password">zakaria</property> -->
+		<!-- <property name="hibernate.connection.username">root</property> -->
+		<!-- <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property> -->
+
+		<property name="show_sql">true</property>
+		<property name="hibernate.hbm2ddl.auto">create</property>
+		<property name="hibernate.jdbc.batch_size">4</property>
+
+		<mapping class="com.vitonjob.entities.Account" />
+		<mapping class="com.vitonjob.entities.Adresse" />
+		<mapping class="com.vitonjob.entities.Agenda" />
+		<mapping class="com.vitonjob.entities.CodePostal" />
+		<mapping class="com.vitonjob.entities.Contrat" />
+		<mapping class="com.vitonjob.entities.Disponibilite" />
+		<mapping class="com.vitonjob.entities.Distance" />
+		<mapping class="com.vitonjob.entities.Employeur" />
+		<mapping class="com.vitonjob.entities.Entreprise" />
+		<mapping class="com.vitonjob.entities.EntrepriseAddress" />
+		<mapping class="com.vitonjob.entities.EntrepriseOffer" />
+		<mapping class="com.vitonjob.entities.Indispensable" />
+		<mapping class="com.vitonjob.entities.Interime" />
+		<mapping class="com.vitonjob.entities.Job" />
+		<mapping class="com.vitonjob.entities.Jobyer" />
+		<mapping class="com.vitonjob.entities.JobyerAddress" />
+		<mapping class="com.vitonjob.entities.JobyerOffer" />
+		<mapping class="com.vitonjob.entities.Language" />
+		<mapping class="com.vitonjob.entities.Level" />
+		<mapping class="com.vitonjob.entities.MedecineDeTravail" />
+		<mapping class="com.vitonjob.entities.Metier" />
+		<mapping class="com.vitonjob.entities.Nationalite" />
+		<mapping class="com.vitonjob.entities.Pays" />
+		<mapping class="com.vitonjob.entities.PlageHoraire" />
+		<mapping class="com.vitonjob.entities.PracticeJob" />
+		<mapping class="com.vitonjob.entities.PracticeLanguage" />
+		<mapping class="com.vitonjob.entities.Repetition" />
+		<mapping class="com.vitonjob.entities.Rue" />
+		<mapping class="com.vitonjob.entities.TimePerTransport" />
+		<mapping class="com.vitonjob.entities.Transport" />
+		<mapping class="com.vitonjob.entities.Ville" />
+	</session-factory>
+</hibernate-configuration>
