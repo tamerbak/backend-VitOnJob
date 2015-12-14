@@ -1,1 +1,1 @@
-# Backen du VitOnJob
+# Backend du projet VitOnJob
