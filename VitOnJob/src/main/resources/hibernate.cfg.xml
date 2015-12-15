@@ -51,5 +51,7 @@
 		<mapping class="com.vitonjob.entities.TimePerTransport" />
 		<mapping class="com.vitonjob.entities.Transport" />
 		<mapping class="com.vitonjob.entities.Ville" />
+		<mapping class="com.vitonjob.entities.IndexationEmployeur" />
+		<mapping class="com.vitonjob.entities.IndexationJobyer" />
 	</session-factory>
 </hibernate-configuration>

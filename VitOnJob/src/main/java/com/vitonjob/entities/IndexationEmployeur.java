@@ -1,0 +1,64 @@
+package com.vitonjob.entities;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.vitonjob.enums.TableIndexationEnum;
+
+@Entity
+@Table(name = "INDEXATION_EMPLOYEUR")
+public class IndexationEmployeur implements Serializable {
+
+	/**
+	 * Serial Version UID
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@Column(name = "INDEXATION_EMPLOYEUR_ID")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "TABLE_INDEXATION")
+	private TableIndexationEnum tableIndexation;
+
+	@ManyToOne
+	@JoinColumn(name = "EMPLOYEUR_ID")
+	private Employeur employeur;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public TableIndexationEnum getTableIndexation() {
+		return tableIndexation;
+	}
+
+	public void setTableIndexation(TableIndexationEnum tableIndexation) {
+		this.tableIndexation = tableIndexation;
+	}
+
+	public Employeur getEmployeur() {
+		return employeur;
+	}
+
+	public void setEmployeur(Employeur employeur) {
+		this.employeur = employeur;
+	}
+
+}
