@@ -20,7 +20,7 @@ public class Pays implements Serializable {
 
 	@Id
 	@Column(name = "PAYS_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "NOM")

@@ -24,7 +24,7 @@ public class JobyerAddress implements Serializable {
 
 	@Id
 	@Column(name = "JOBYER_ADDRESS_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "IS_PERSONAL_ADDRESS")

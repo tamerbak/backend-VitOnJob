@@ -23,7 +23,7 @@ public class Agenda implements Serializable {
 
 	@Id
 	@Column(name = "AGENDA_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "LIBELLE")

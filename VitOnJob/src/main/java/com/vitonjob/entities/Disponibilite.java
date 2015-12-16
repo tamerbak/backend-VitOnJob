@@ -26,7 +26,7 @@ public class Disponibilite implements Serializable {
 
 	@Id
 	@Column(name = "DISPONIBILITE_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "DATE_DE_DEBUT")

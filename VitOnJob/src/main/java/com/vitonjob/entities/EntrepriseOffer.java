@@ -25,7 +25,7 @@ public class EntrepriseOffer implements Serializable {
 
 	@Id
 	@Column(name = "ENTREPRISE_OFFER_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "TITRE")

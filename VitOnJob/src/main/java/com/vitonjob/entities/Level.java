@@ -20,7 +20,7 @@ public class Level implements Serializable {
 
 	@Id
 	@Column(name = "LEVEL_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "LIBELLE")

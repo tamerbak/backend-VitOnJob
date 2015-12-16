@@ -22,7 +22,7 @@ public class CodePostal implements Serializable {
 
 	@Id
 	@Column(name = "CODE_POSTAL_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "LIBELLE")

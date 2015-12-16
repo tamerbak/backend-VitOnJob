@@ -25,7 +25,7 @@ public class Ville implements Serializable {
 
 	@Id
 	@Column(name = "VILLE_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "NOM")

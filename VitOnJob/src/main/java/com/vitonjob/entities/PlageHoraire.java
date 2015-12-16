@@ -22,7 +22,7 @@ public class PlageHoraire implements Serializable {
 
 	@Id
 	@Column(name = "PLAGE_HORAIRE_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "HEURE_DE_DEBUT")

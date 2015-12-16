@@ -20,7 +20,7 @@ public class Nationalite implements Serializable {
 
 	@Id
 	@Column(name = "NATIONALITE_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "LIBELLE")

@@ -22,7 +22,7 @@ public class PracticeLanguage implements Serializable {
 
 	@Id
 	@Column(name = "PRACTICE_LANGUAGE_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne

@@ -22,7 +22,7 @@ public class Repetition implements Serializable {
 
 	@Id
 	@Column(name = "REPETITION_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "EST_LUNDI")

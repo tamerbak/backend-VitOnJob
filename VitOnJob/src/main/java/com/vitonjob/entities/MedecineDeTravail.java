@@ -22,7 +22,7 @@ public class MedecineDeTravail implements Serializable {
 
 	@Id
 	@Column(name = "MEDECINE_DE_TRAVAIL_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "NOM")

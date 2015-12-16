@@ -20,7 +20,7 @@ public class Account implements Serializable {
 
 	@Id
 	@Column(name = "ACCOUNT_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "TELEPHONE")

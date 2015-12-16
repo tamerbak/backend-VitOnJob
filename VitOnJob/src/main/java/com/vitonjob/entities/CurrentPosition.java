@@ -4,20 +4,16 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.vitonjob.enums.TableIndexationEnum;
-
 @Entity
-@Table(name = "INDEXATION_JOBYER")
-public class IndexationJobyer implements Serializable {
+@Table(name = "CURRENT_POSITION")
+public class CurrentPosition implements Serializable {
 
 	/**
 	 * Serial Version UID
@@ -25,15 +21,17 @@ public class IndexationJobyer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "INDEXATION_JOBYER_ID")
+	@Column(name = "CURRENT_POSITION_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "TABLE_INDEXATION")
-	private TableIndexationEnum tableIndexation;
+	@Column(name = "LIBELLE")
+	private Integer longitude;
 
-	@ManyToOne
+	@Column(name = "LATITUDE")
+	private Integer latitude;
+
+	@OneToOne
 	@JoinColumn(name = "JOBYER_ID")
 	private Jobyer jobyer;
 
@@ -45,12 +43,20 @@ public class IndexationJobyer implements Serializable {
 		this.id = id;
 	}
 
-	public TableIndexationEnum getTableIndexation() {
-		return tableIndexation;
+	public Integer getLongitude() {
+		return longitude;
 	}
 
-	public void setTableIndexation(TableIndexationEnum tableIndexation) {
-		this.tableIndexation = tableIndexation;
+	public void setLongitude(Integer longitude) {
+		this.longitude = longitude;
+	}
+
+	public Integer getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Integer latitude) {
+		this.latitude = latitude;
 	}
 
 	public Jobyer getJobyer() {

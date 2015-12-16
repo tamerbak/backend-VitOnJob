@@ -22,7 +22,7 @@ public class JobyerOffer implements Serializable {
 
 	@Id
 	@Column(name = "JOBYER_OFFER_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "TARIF_A_L_HEURE")

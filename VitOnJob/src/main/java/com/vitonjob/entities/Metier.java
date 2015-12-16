@@ -20,7 +20,7 @@ public class Metier implements Serializable {
 
 	@Id
 	@Column(name = "METIER_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "LIBELLE")

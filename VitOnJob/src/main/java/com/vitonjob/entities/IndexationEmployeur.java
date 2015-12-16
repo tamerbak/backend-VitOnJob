@@ -26,7 +26,7 @@ public class IndexationEmployeur implements Serializable {
 
 	@Id
 	@Column(name = "INDEXATION_EMPLOYEUR_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Enumerated(EnumType.STRING)

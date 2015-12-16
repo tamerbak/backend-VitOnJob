@@ -22,7 +22,7 @@ public class TimePerTransport implements Serializable {
 
 	@Id
 	@Column(name = "TIME_PER_TRANSPORT_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "VALEUR")

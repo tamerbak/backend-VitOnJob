@@ -20,7 +20,7 @@ public class Rue implements Serializable {
 
 	@Id
 	@Column(name = "RUE_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "NOM")

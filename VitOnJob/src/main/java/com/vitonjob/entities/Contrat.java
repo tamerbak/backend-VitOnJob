@@ -23,7 +23,7 @@ public class Contrat implements Serializable {
 
 	@Id
 	@Column(name = "CONTRAT_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "DATE_DE_DEBUT")
