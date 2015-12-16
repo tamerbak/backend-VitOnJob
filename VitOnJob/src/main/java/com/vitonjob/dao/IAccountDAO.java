@@ -1,0 +1,14 @@
+package com.vitonjob.dao;
+
+import com.vitonjob.entities.Account;
+
+public interface IAccountDAO extends IGenericDao<Account> {
+
+	/**
+	 * récupère le compte par email.
+	 * 
+	 * @return le compte associé à l'email.
+	 */
+	Account findByLogin(String email);
+
+}

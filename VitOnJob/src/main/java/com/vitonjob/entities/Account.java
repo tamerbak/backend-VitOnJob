@@ -29,6 +29,23 @@ public class Account implements Serializable {
 	@Column(name = "EMAIL")
 	private String email;
 
+	@Column(name = "MOT_DE_PASSE")
+	private String motDePasse;
+
+	@Column(name = "ROLE")
+	private String role;
+
+	public Account(Account account) {
+		this.id = account.getId();
+		this.telephone = account.getTelephone();
+		this.email = account.getEmail();
+		this.motDePasse = account.getMotDePasse();
+		this.role = account.getRole();
+	}
+
+	public Account() {
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -61,7 +78,12 @@ public class Account implements Serializable {
 		this.motDePasse = motDePasse;
 	}
 
-	@Column(name = "MOT_DE_PASSE")
-	private String motDePasse;
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 }
