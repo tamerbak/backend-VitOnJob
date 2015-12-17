@@ -9,7 +9,8 @@
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
-	<context:component-scan base-package="com.vitonjob.dao,com.vitonjob.rest" />
+	<context:component-scan
+		base-package="com.vitonjob.dao,com.vitonjob.rest,com.vitonjob.security" />
 
 	<!-- DataSource Definition Bean -->
 	<bean id="dataSource"
