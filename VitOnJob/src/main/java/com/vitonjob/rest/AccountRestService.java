@@ -65,7 +65,7 @@ public class AccountRestService {
 				if (StringUtils.isNotEmpty(loginDTO.getEmail())) {
 					employeur = accountDAO.findEmployeurByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
 				} else if (StringUtils.isNotEmpty(loginDTO.getTelephone())) {
-					employeur = accountDAO.findEmployeurByTelephoneAndPassword(loginDTO.getEmail(),
+					employeur = accountDAO.findEmployeurByTelephoneAndPassword(loginDTO.getTelephone(),
 							loginDTO.getPassword());
 				}
 
