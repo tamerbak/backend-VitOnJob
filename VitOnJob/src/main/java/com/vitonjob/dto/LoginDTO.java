@@ -2,6 +2,10 @@ package com.vitonjob.dto;
 
 import java.io.Serializable;
 
+import org.json.simple.JSONObject;
+
+import com.vitonjob.utils.StringUtils;
+
 public class LoginDTO implements Serializable {
 
 	/**
@@ -16,6 +20,13 @@ public class LoginDTO implements Serializable {
 	protected String password;
 
 	private String role;
+
+	public LoginDTO(JSONObject jsonLogin) {
+		this.email = StringUtils.decode64((String) jsonLogin.get("email"));
+		this.telephone = StringUtils.decode64((String) jsonLogin.get("telephone"));
+		this.password = StringUtils.decode64((String) jsonLogin.get("password"));
+		this.role = StringUtils.decode64((String) jsonLogin.get("role"));
+	}
 
 	public String getEmail() {
 		return email;

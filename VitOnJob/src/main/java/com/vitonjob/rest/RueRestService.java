@@ -17,6 +17,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.vitonjob.dao.IRueDAO;
 import com.vitonjob.dto.RueDTO;
 import com.vitonjob.entities.Rue;
+import com.vitonjob.utils.StringUtils;
 
 /**
  * Classe implementant les services rest pour les objets Rue.
@@ -56,7 +57,8 @@ public class RueRestService {
 
 		WebResource webResource = client.resource("http://localhost:8080/VitOnJob/rest/public/account/login");
 
-		byte[] bytesEncoded = Base64.getEncoder().encode("rachid@rachid.com:rachid".getBytes());
+		// byte[] bytesEncoded =
+		// Base64.getEncoder().encode("rachid@rachid.com:rachid".getBytes());
 		// System.out.println("ecncoded value is " + new String(bytesEncoded));
 
 		// ClientResponse responseMsg = webResource.path("/common/rue/getAll")
@@ -65,10 +67,12 @@ public class RueRestService {
 
 		// ClientResponse responseMsg =
 		// webResource.path("/public/account/login").post(ClientResponse.class);
+		String login = "{\"email\":\"" + StringUtils.encode64("rachid@test.com") + "\",\"telephone\":\""
+				+ StringUtils.encode64("0636985471") + "\",\"password\":\"" + StringUtils.encode64("123456")
+				+ "\",\"role\":\"" + StringUtils.encode64("employeur") + "\"}";
 
-		String input = "{\"email\":\"rachid@test.com\",\"telephone\":\"0636985471\",\"password\":\"123456\",\"role\":\"employeur\"}";
-
-		ClientResponse response = webResource.type("application/json").post(ClientResponse.class, input);
+		ClientResponse response = webResource.header("login", login).type("application/json").post(ClientResponse.class,
+				null);
 
 		System.out.println(response.getStatus());
 	}

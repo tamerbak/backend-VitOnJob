@@ -3,11 +3,16 @@ package com.vitonjob.rest;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -51,57 +56,64 @@ public class AccountRestService {
 	@Path("/login")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public UtilisateurDTO login(LoginDTO loginDTO) {
+	public UtilisateurDTO login(@Context HttpHeaders headers, @HeaderParam("email") String email) {
 		UtilisateurDTO utilisateurDTO = null;
 		try {
-			if (StringUtils.isEmpty(loginDTO.getPassword())
-					|| (StringUtils.isEmpty(loginDTO.getEmail()) && StringUtils.isEmpty(loginDTO.getTelephone()))) {
-				throw new IllegalArgumentException("Les données du llogin sont invalides.");
-			}
-
-			if ("employeur".equals(loginDTO.getRole())) {
-				EmployeurDTO employeur = null;
-
-				if (StringUtils.isNotEmpty(loginDTO.getEmail())) {
-					employeur = accountDAO.findEmployeurByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
-				} else if (StringUtils.isNotEmpty(loginDTO.getTelephone())) {
-					employeur = accountDAO.findEmployeurByTelephoneAndPassword(loginDTO.getTelephone(),
-							loginDTO.getPassword());
+			if (CollectionUtils.isNotEmpty(headers.getRequestHeader("login"))) {
+				JSONObject jsonLogin = (JSONObject) new JSONParser().parse(headers.getRequestHeader("login").get(0));
+				LoginDTO loginDTO = new LoginDTO(jsonLogin);
+				if (StringUtils.isEmpty(loginDTO.getPassword())
+						|| (StringUtils.isEmpty(loginDTO.getEmail()) && StringUtils.isEmpty(loginDTO.getTelephone()))) {
+					throw new IllegalArgumentException("Les données du login sont invalides.");
 				}
 
-				if (employeur != null) {
-					// Récupération de la liste des entreprises
-					List<EntrepriseDTO> entreprises = entrepriseDAO
-							.getEntreprisesByEmployeur(employeur.getEmployerId());
+				if ("employeur".equals(loginDTO.getRole())) {
+					EmployeurDTO employeur = null;
 
-					if (CollectionUtils.isNotEmpty(entreprises)) {
-						// Récupération de la liste des offres pour chaque
-						// entreprise
-						List<OfferDTO> offers;
-
-						for (EntrepriseDTO entreprise : entreprises) {
-							offers = offerDAO.getOffresByEntreprise(entreprise.getEntrepriseId());
-
-							if (CollectionUtils.isNotEmpty(offers)) {
-								// Récupération de la liste des practice job et
-								// practice language pour chaque offre
-								for (OfferDTO offer : offers) {
-									offer.setPricticesJob(practiceJobDAO.getPracticesJobByOffer(offer.getOfferId()));
-									offer.setPricticesLanguage(
-											practiceLangueDAO.getPracticeLanguageByOffer(offer.getOfferId()));
-								}
-
-								entreprise.setOffers(offers);
-							}
-						}
-
-						employeur.setEntreprises(entreprises);
+					if (StringUtils.isNotEmpty(loginDTO.getEmail())) {
+						employeur = accountDAO.findEmployeurByEmailAndPassword(loginDTO.getEmail(),
+								loginDTO.getPassword());
+					} else if (StringUtils.isNotEmpty(loginDTO.getTelephone())) {
+						employeur = accountDAO.findEmployeurByTelephoneAndPassword(loginDTO.getTelephone(),
+								loginDTO.getPassword());
 					}
-				}
 
-				return employeur;
-			} else if ("jobyer".equals(loginDTO.getRole())) {
-				// TODO
+					if (employeur != null) {
+						// Récupération de la liste des entreprises
+						List<EntrepriseDTO> entreprises = entrepriseDAO
+								.getEntreprisesByEmployeur(employeur.getEmployerId());
+
+						if (CollectionUtils.isNotEmpty(entreprises)) {
+							// Récupération de la liste des offres pour chaque
+							// entreprise
+							List<OfferDTO> offers;
+
+							for (EntrepriseDTO entreprise : entreprises) {
+								offers = offerDAO.getOffresByEntreprise(entreprise.getEntrepriseId());
+
+								if (CollectionUtils.isNotEmpty(offers)) {
+									// Récupération de la liste des practice job
+									// et
+									// practice language pour chaque offre
+									for (OfferDTO offer : offers) {
+										offer.setPricticesJob(
+												practiceJobDAO.getPracticesJobByOffer(offer.getOfferId()));
+										offer.setPricticesLanguage(
+												practiceLangueDAO.getPracticeLanguageByOffer(offer.getOfferId()));
+									}
+
+									entreprise.setOffers(offers);
+								}
+							}
+
+							employeur.setEntreprises(entreprises);
+						}
+					}
+
+					return employeur;
+				} else if ("jobyer".equals(loginDTO.getRole())) {
+					// TODO
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
