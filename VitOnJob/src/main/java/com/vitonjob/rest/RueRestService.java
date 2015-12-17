@@ -54,14 +54,23 @@ public class RueRestService {
 	public static void main(String[] args) {
 		Client client = Client.create();
 
-		WebResource webResource = client.resource("http://localhost:8080/VitOnJob/rest");
+		WebResource webResource = client.resource("http://localhost:8080/VitOnJob/rest/public/account/login");
 
 		byte[] bytesEncoded = Base64.getEncoder().encode("rachid@rachid.com:rachid".getBytes());
 		// System.out.println("ecncoded value is " + new String(bytesEncoded));
 
-		ClientResponse responseMsg = webResource.path("/common/rue/getAll")
-				.header("Authorization", "Basic " + new String(bytesEncoded)).get(ClientResponse.class);
-		System.out.println(responseMsg.getStatus());
+		// ClientResponse responseMsg = webResource.path("/common/rue/getAll")
+		// .header("Authorization", "Basic " + new
+		// String(bytesEncoded)).get(ClientResponse.class);
+
+		// ClientResponse responseMsg =
+		// webResource.path("/public/account/login").post(ClientResponse.class);
+
+		String input = "{\"email\":\"rachid@test.com\",\"telephone\":\"0636985471\",\"password\":\"123456\",\"role\":\"employeur\"}";
+
+		ClientResponse response = webResource.type("application/json").post(ClientResponse.class, input);
+
+		System.out.println(response.getStatus());
 	}
 
 }

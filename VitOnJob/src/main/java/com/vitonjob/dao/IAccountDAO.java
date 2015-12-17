@@ -1,5 +1,6 @@
 package com.vitonjob.dao;
 
+import com.vitonjob.dto.EmployeurDTO;
 import com.vitonjob.entities.Account;
 
 public interface IAccountDAO extends IGenericDao<Account> {
@@ -11,4 +12,7 @@ public interface IAccountDAO extends IGenericDao<Account> {
 	 */
 	Account findByLogin(String email);
 
+	EmployeurDTO findEmployeurByEmailAndPassword(String email, String password);
+
+	EmployeurDTO findEmployeurByTelephoneAndPassword(String telephone, String password);
 }

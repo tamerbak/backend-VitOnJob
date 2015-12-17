@@ -23,9 +23,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/rest/public/**").permitAll().antMatchers("/rest/common/**").authenticated().antMatchers("/rest/employeur/**")
-				.hasAnyAuthority("Employeur").antMatchers("/rest/jobyer/**").hasAnyAuthority("Jobyer").and()
-				.exceptionHandling().and().httpBasic();
+		http.authorizeRequests().antMatchers("/rest/public/**").permitAll().antMatchers("/rest/common/**")
+				.authenticated().antMatchers("/rest/employeur/**").hasAnyAuthority("Employeur")
+				.antMatchers("/rest/jobyer/**").hasAnyAuthority("Jobyer").and().exceptionHandling().and().httpBasic()
+				.and().formLogin().and().csrf().disable();
 
 	}
 
