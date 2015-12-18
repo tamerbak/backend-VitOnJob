@@ -26,13 +26,13 @@ public class JobyerOffer implements Serializable {
 	private Long id;
 
 	@Column(name = "TARIF_A_L_HEURE")
-	private Double TarifALHeure;
+	private Double tarifALHeure;
 
 	@Column(name = "TITRE")
-	private String Titre;
+	private String titre;
 
 	@Column(name = "DESCRIPTION")
-	private String Description;
+	private String description;
 
 	@ManyToOne
 	@JoinColumn(name = "JOBYER_ID")
@@ -55,27 +55,27 @@ public class JobyerOffer implements Serializable {
 	}
 
 	public Double getTarifALHeure() {
-		return TarifALHeure;
+		return tarifALHeure;
 	}
 
 	public void setTarifALHeure(Double tarifALHeure) {
-		TarifALHeure = tarifALHeure;
+		this.tarifALHeure = tarifALHeure;
 	}
 
 	public String getTitre() {
-		return Titre;
+		return titre;
 	}
 
 	public void setTitre(String titre) {
-		Titre = titre;
+		this.titre = titre;
 	}
 
 	public String getDescription() {
-		return Description;
+		return description;
 	}
 
 	public void setDescription(String description) {
-		Description = description;
+		this.description = description;
 	}
 
 	public Jobyer getJobyer() {
