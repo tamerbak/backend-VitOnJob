@@ -72,6 +72,10 @@ public class Jobyer implements Serializable {
 	@JoinColumn(name = "NATIONALITE_ID")
 	private Nationalite nationalite;
 
+	@OneToOne
+	@JoinColumn(name = "CURRENT_POSITION")
+	private CurrentPosition currentPosition;
+
 	public Long getId() {
 		return id;
 	}
@@ -166,6 +170,14 @@ public class Jobyer implements Serializable {
 
 	public void setNationalite(Nationalite nationalite) {
 		this.nationalite = nationalite;
+	}
+
+	public CurrentPosition getCurrentPosition() {
+		return currentPosition;
+	}
+
+	public void setCurrentPosition(CurrentPosition currentPosition) {
+		this.currentPosition = currentPosition;
 	}
 
 }

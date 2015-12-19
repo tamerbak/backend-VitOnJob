@@ -9,4 +9,6 @@ public interface IEntrepriseDAO extends IGenericDao<Entreprise> {
 
 	List<EntrepriseDTO> getEntreprisesByEmployeur(Long employerId);
 
+	EntrepriseDTO geoLocateEntreprise(Long entrepriseId);
+
 }

@@ -21,4 +21,13 @@ public class EntrepriseDAOImpl extends GenericDAOImpl<Entreprise>implements IEnt
 		return query.list();
 	}
 
+	@Override
+	public EntrepriseDTO geoLocateEntreprise(Long entrepriseId) {
+		Query query = getCurrentSession().createQuery(
+				"SELECT new com.vitonjob.dto.EntrepriseDTO(entrAddress.id, address.longitude, address.latitude) FROM Entreprise entr INNER JOIN entr.listEntrepriseAddress entrAddress INNER JOIN entrAddress.adresse address WHERE entr.id = :entrepriseId AND entrAddress.isWorkAddress = :isWorkAddress");
+		query.setParameter("entrepriseId", entrepriseId);
+		query.setParameter("isWorkAddress", true);
+		return (EntrepriseDTO) query.uniqueResult();
+	}
+
 }

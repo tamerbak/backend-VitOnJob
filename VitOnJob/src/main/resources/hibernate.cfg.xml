@@ -54,5 +54,6 @@
 		<mapping class="com.vitonjob.entities.IndexationEmployeur" />
 		<mapping class="com.vitonjob.entities.IndexationJobyer" />
 		<mapping class="com.vitonjob.entities.CurrentPosition" />
+		<mapping class="com.vitonjob.entities.JobyerOfferContact" />
 	</session-factory>
 </hibernate-configuration>

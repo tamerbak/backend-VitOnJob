@@ -31,6 +31,12 @@ public class Adresse implements Serializable {
 	@Column(name = "COMPLEMENT")
 	private String complement;
 
+	@Column(name = "LONGITUDE")
+	private Integer longitude;
+
+	@Column(name = "LATITUDE")
+	private Integer latitude;
+
 	@ManyToOne
 	@JoinColumn(name = "VILLE_ID")
 	private Ville ville;
