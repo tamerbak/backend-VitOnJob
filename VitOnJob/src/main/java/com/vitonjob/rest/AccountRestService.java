@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vitonjob.dao.IAccountDAO;
+import com.vitonjob.dao.IEmployeurDAO;
 import com.vitonjob.dao.IEntrepriseDAO;
 import com.vitonjob.dao.IOfferDAO;
 import com.vitonjob.dao.IPracticeJobDAO;
@@ -27,6 +28,8 @@ import com.vitonjob.dto.LoginDTO;
 import com.vitonjob.dto.OfferDTO;
 import com.vitonjob.dto.UtilisateurDTO;
 import com.vitonjob.entities.Account;
+import com.vitonjob.entities.Employeur;
+import com.vitonjob.entities.Entreprise;
 import com.vitonjob.utils.CollectionUtils;
 import com.vitonjob.utils.StringUtils;
 
@@ -51,6 +54,9 @@ public class AccountRestService {
 
 	@Autowired
 	private IPracticeLanguageDAO practiceLangueDAO;
+
+	@Autowired
+	private IEmployeurDAO employeurDAO;
 
 	@POST
 	@Path("/login")
@@ -109,6 +115,26 @@ public class AccountRestService {
 							employeur.setEntreprises(entreprises);
 						}
 					}
+					// Si aucun compte n'existe pas avec l'email ou telephone,
+					// on en crée un.
+					else {
+						Long countExistingAccounts = 0L;
+						if (StringUtils.isNotEmpty(loginDTO.getEmail())) {
+							countExistingAccounts = accountDAO.countUsersWithEmail(loginDTO.getEmail());
+						} else if (StringUtils.isNotEmpty(loginDTO.getTelephone())) {
+							countExistingAccounts = accountDAO.countUsersWithTelephone(loginDTO.getTelephone());
+						}
+						if (countExistingAccounts == 0) {
+							Long employeurSavedId = employeurDAO.create(new Employeur());
+							entrepriseDAO
+									.create(new Entreprise(
+											new Account(loginDTO.getTelephone(), loginDTO.getEmail(),
+													loginDTO.getPassword(), "employeur"),
+											employeurDAO.findOne(employeurSavedId)));
+							employeur = new EmployeurDTO(employeurSavedId, loginDTO.getEmail(), loginDTO.getTelephone(),
+									true);
+						}
+					}
 
 					return employeur;
 				} else if ("jobyer".equals(loginDTO.getRole())) {
@@ -160,6 +186,16 @@ public class AccountRestService {
 
 	public void setPracticeLangueDAO(IPracticeLanguageDAO practiceLangueDAO) {
 		this.practiceLangueDAO = practiceLangueDAO;
+	}
+
+	public IEmployeurDAO getEmployeurDAO() {
+		return employeurDAO;
+	}
+
+	@Autowired
+	public void setEmployeurDAO(IEmployeurDAO employeurDAO) {
+		this.employeurDAO.setClazz(Employeur.class);
+		this.employeurDAO = employeurDAO;
 	}
 
 }

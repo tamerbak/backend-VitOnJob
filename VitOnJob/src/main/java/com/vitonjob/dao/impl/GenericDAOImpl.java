@@ -34,8 +34,8 @@ public class GenericDAOImpl<T extends Serializable> implements IGenericDao<T> {
 		return getCurrentSession().createQuery("from " + clazz.getName()).list();
 	}
 
-	public void create(T entity) {
-		getCurrentSession().persist(entity);
+	public Long create(T entity) {
+		return (Long) getCurrentSession().save(entity);
 	}
 
 	public void update(T entity) {

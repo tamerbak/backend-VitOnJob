@@ -43,6 +43,13 @@ public class Account implements Serializable {
 		this.role = account.getRole();
 	}
 
+	public Account(String telephone, String email, String motDePasse, String role) {
+		this.telephone = telephone;
+		this.email = email;
+		this.motDePasse = motDePasse;
+		this.role = role;
+	}
+
 	public Account() {
 	}
 

@@ -15,4 +15,8 @@ public interface IAccountDAO extends IGenericDao<Account> {
 	EmployeurDTO findEmployeurByEmailAndPassword(String email, String password);
 
 	EmployeurDTO findEmployeurByTelephoneAndPassword(String telephone, String password);
+
+	Long countUsersWithEmail(String email);
+
+	Long countUsersWithTelephone(String telephone);
 }

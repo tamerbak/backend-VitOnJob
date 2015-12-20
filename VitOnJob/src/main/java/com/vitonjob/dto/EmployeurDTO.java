@@ -18,6 +18,11 @@ public class EmployeurDTO extends UtilisateurDTO {
 		this.employerId = employerId;
 	}
 
+	public EmployeurDTO(Long employerId, String email, String telephone, boolean isNew) {
+		super(email, telephone, isNew);
+		this.employerId = employerId;
+	}
+
 	public EmployeurDTO() {
 	}
 

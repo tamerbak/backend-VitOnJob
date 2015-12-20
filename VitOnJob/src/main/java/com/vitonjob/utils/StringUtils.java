@@ -25,4 +25,12 @@ public class StringUtils {
 		}
 		return new String(Base64.getDecoder().decode(strEncoded.getBytes()));
 	}
+	
+//	public static String replaceAll(String string) {
+//        return string.replaceFirst("\\d*", "");
+//    }
+//	
+//	public static void main(String[] args) {
+//		System.out.println(replaceAll("3 RUE DES 44 HETRES ZA DE CHARTRETTES"));
+//	}
 }

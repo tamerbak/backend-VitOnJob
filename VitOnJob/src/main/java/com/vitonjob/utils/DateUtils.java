@@ -7,7 +7,7 @@ public class DateUtils {
 
 	public static String getDayName(Date date) {
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date());
+		calendar.setTime(date);
 		int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
 
 		switch (dayOfWeek) {
@@ -39,7 +39,7 @@ public class DateUtils {
 
 	public static Date getDateTime(Date date, Integer heureDeDebutEnMinutes) {
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date());
+		calendar.setTime(date);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
@@ -55,7 +55,7 @@ public class DateUtils {
 	public static Date addOrRemoveDays(Date date, int n) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
-		calendar.add(Calendar.DATE, n);
+		calendar.add(Calendar.DAY_OF_MONTH, n);
 		return calendar.getTime();
 	}
 

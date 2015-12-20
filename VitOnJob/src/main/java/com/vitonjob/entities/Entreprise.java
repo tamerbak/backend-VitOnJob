@@ -3,6 +3,7 @@ package com.vitonjob.entities;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -47,7 +48,7 @@ public class Entreprise implements Serializable {
 	@Column(name = "CNI_OU_RC")
 	private Integer cniOuRc;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "ACCOUNT_ID")
 	private Account account;
 
@@ -60,6 +61,14 @@ public class Entreprise implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "EMPLOYEUR_ID")
 	private Employeur employeur;
+
+	public Entreprise() {
+	}
+
+	public Entreprise(Account account, Employeur employeur) {
+		this.account = account;
+		this.employeur = employeur;
+	}
 
 	public Long getId() {
 		return id;

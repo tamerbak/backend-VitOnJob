@@ -158,6 +158,7 @@ public class JobyerOfferRestService {
 
 	private Long getDureeAvantDisponibilite(Agenda agenda, Date now) {
 		Long duree = null;
+		Date toDay = new Date();
 		if (CollectionUtils.isNotEmpty(agenda.getListDisponibilites())) {
 			for (Disponibilite disponibilite : agenda.getListDisponibilites()) {
 				if (disponibilite.getDateDeFin().before(now)) {
@@ -172,10 +173,10 @@ public class JobyerOfferRestService {
 						while (date.before(disponibilite.getDateDeFin()) || date.equals(disponibilite.getDateDeFin())) {
 							dayName = DateUtils.getDayName(date);
 							if (isDayInRepetition(plageHoraire.getRepetition(), dayName)
-									&& date.before(DateUtils.getDateTime(date, plageHoraire.getHeureDeFin()))) {
+									&& toDay.before(DateUtils.getDateTime(date, plageHoraire.getHeureDeFin()))) {
 								dateDebutPossible = DateUtils.getDateTime(date, plageHoraire.getHeureDeDebut());
-								if (date.before(DateUtils.getDateTime(date, plageHoraire.getHeureDeDebut()))) {
-									return DateUtils.getDuration(date, dateDebutPossible);
+								if (toDay.before(dateDebutPossible)) {
+									return DateUtils.getDuration(toDay, dateDebutPossible);
 								} else {
 									return 0L;
 								}
@@ -192,25 +193,25 @@ public class JobyerOfferRestService {
 	private boolean isDayInRepetition(Repetition repetition, String dayName) {
 		switch (dayName) {
 		case "Dimanche":
-			return repetition.getEstDimanche();
+			return repetition.getEstDimanche() != null && repetition.getEstDimanche();
 
 		case "Lundi":
-			return repetition.getEstLundi();
+			return repetition.getEstLundi() != null && repetition.getEstLundi();
 
 		case "Mardi":
-			return repetition.getEstMardi();
+			return repetition.getEstMardi() != null && repetition.getEstMardi();
 
 		case "Mercredi":
-			return repetition.getEstMercredi();
+			return repetition.getEstMercredi() != null && repetition.getEstMercredi();
 
 		case "Jeudi":
-			return repetition.getEstJeudi();
+			return repetition.getEstJeudi() != null && repetition.getEstJeudi();
 
 		case "Vendredi":
-			return repetition.getEstVendredi();
+			return repetition.getEstVendredi() != null && repetition.getEstVendredi();
 
 		case "Samedi":
-			return repetition.getEstSamedi();
+			return repetition.getEstSamedi() != null && repetition.getEstSamedi();
 
 		default:
 			break;

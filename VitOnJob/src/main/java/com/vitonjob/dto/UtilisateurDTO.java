@@ -11,8 +11,18 @@ public class UtilisateurDTO implements Serializable {
 
 	protected String email;
 
+	protected String telephone;
+
+	protected boolean isNew;
+
 	public UtilisateurDTO(String email) {
 		this.email = email;
+	}
+
+	public UtilisateurDTO(String email, String telephone, boolean isNew) {
+		this.email = email;
+		this.telephone = telephone;
+		this.isNew = isNew;
 	}
 
 	public UtilisateurDTO() {
@@ -24,6 +34,22 @@ public class UtilisateurDTO implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public boolean isNew() {
+		return isNew;
+	}
+
+	public void setNew(boolean isNew) {
+		this.isNew = isNew;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 }
