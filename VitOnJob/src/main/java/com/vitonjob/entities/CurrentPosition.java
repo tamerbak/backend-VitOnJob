@@ -24,10 +24,10 @@ public class CurrentPosition implements Serializable {
 	private Long id;
 
 	@Column(name = "LONGITUDE")
-	private Integer longitude;
+	private Double longitude;
 
 	@Column(name = "LATITUDE")
-	private Integer latitude;
+	private Double latitude;
 
 	public Long getId() {
 		return id;
@@ -37,19 +37,19 @@ public class CurrentPosition implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getLongitude() {
+	public Double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(Integer longitude) {
+	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
 
-	public Integer getLatitude() {
+	public Double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(Integer latitude) {
+	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
 

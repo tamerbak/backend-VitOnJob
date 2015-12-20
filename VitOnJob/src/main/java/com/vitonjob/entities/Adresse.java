@@ -32,10 +32,10 @@ public class Adresse implements Serializable {
 	private String complement;
 
 	@Column(name = "LONGITUDE")
-	private Integer longitude;
+	private Double longitude;
 
 	@Column(name = "LATITUDE")
-	private Integer latitude;
+	private Double latitude;
 
 	@ManyToOne
 	@JoinColumn(name = "VILLE_ID")
@@ -95,6 +95,22 @@ public class Adresse implements Serializable {
 
 	public void setCodePostal(CodePostal codePostal) {
 		this.codePostal = codePostal;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
 	}
 
 }

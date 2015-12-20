@@ -2,34 +2,43 @@ package com.vitonjob.dto;
 
 import java.io.Serializable;
 
-public class JobyerOfferDTO implements Serializable {
+public class JobyerOfferDTO implements Serializable, Comparable<JobyerOfferDTO> {
 
 	/**
 	 * Serial Version UID
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private Long jobyerOfferId;
+
 	private String jobyerName;
 
-	private Integer longitude;
+	private Double longitude;
 
-	private Integer latitude;
+	private Double latitude;
 
-	private Integer longitudeAddress;
+	private Double longitudeAddress;
 
-	private Integer latitudeAddress;
+	private Double latitudeAddress;
 
-	private Integer longitudeCurrentPosition;
+	private Double longitudeCurrentPosition;
 
-	private Integer latitudeCurrentPosition;
+	private Double latitudeCurrentPosition;
 
 	private boolean on;
 
 	private Long jobyerAddressId;
 
-	public JobyerOfferDTO(String jobyerName, Long jobyerAddressId, Integer longitudeAddress, Integer latitudeAddress,
-			Integer longitudeCurrentPosition, Integer latitudeCurrentPosition) {
+	private Long jobyerId;
+
+	private AvailabilityDTO availability;
+
+	public JobyerOfferDTO(Long jobyerOfferId, String jobyerName, Long jobyerId, Long jobyerAddressId,
+			Double longitudeAddress, Double latitudeAddress, Double longitudeCurrentPosition,
+			Double latitudeCurrentPosition) {
+		this.jobyerOfferId = jobyerOfferId;
 		this.jobyerName = jobyerName;
+		this.jobyerId = jobyerId;
 		this.jobyerAddressId = jobyerAddressId;
 		this.longitudeAddress = longitudeAddress;
 		this.latitudeAddress = latitudeAddress;
@@ -57,22 +66,6 @@ public class JobyerOfferDTO implements Serializable {
 		this.jobyerName = jobyerName;
 	}
 
-	public Integer getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(Integer longitude) {
-		this.longitude = longitude;
-	}
-
-	public Integer getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(Integer latitude) {
-		this.latitude = latitude;
-	}
-
 	public boolean isOn() {
 		return on;
 	}
@@ -81,44 +74,89 @@ public class JobyerOfferDTO implements Serializable {
 		this.on = on;
 	}
 
-	public Integer getLongitudeAddress() {
-		return longitudeAddress;
-	}
-
-	public void setLongitudeAddress(Integer longitudeAddress) {
-		this.longitudeAddress = longitudeAddress;
-	}
-
-	public Integer getLatitudeAddress() {
-		return latitudeAddress;
-	}
-
-	public void setLatitudeAddress(Integer latitudeAddress) {
-		this.latitudeAddress = latitudeAddress;
-	}
-
-	public Integer getLongitudeCurrentPosition() {
-		return longitudeCurrentPosition;
-	}
-
-	public void setLongitudeCurrentPosition(Integer longitudeCurrentPosition) {
-		this.longitudeCurrentPosition = longitudeCurrentPosition;
-	}
-
-	public Integer getLatitudeCurrentPosition() {
-		return latitudeCurrentPosition;
-	}
-
-	public void setLatitudeCurrentPosition(Integer latitudeCurrentPosition) {
-		this.latitudeCurrentPosition = latitudeCurrentPosition;
-	}
-
 	public Long getJobyerAddressId() {
 		return jobyerAddressId;
 	}
 
 	public void setJobyerAddressId(Long jobyerAddressId) {
 		this.jobyerAddressId = jobyerAddressId;
+	}
+
+	public Long getJobyerId() {
+		return jobyerId;
+	}
+
+	public void setJobyerId(Long jobyerId) {
+		this.jobyerId = jobyerId;
+	}
+
+	public AvailabilityDTO getAvailability() {
+		return availability;
+	}
+
+	public void setAvailability(AvailabilityDTO availability) {
+		this.availability = availability;
+	}
+
+	@Override
+	public int compareTo(JobyerOfferDTO o) {
+		return this.getAvailability().getValue().compareTo(o.getAvailability().getValue());
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+
+	public Double getLongitudeAddress() {
+		return longitudeAddress;
+	}
+
+	public void setLongitudeAddress(Double longitudeAddress) {
+		this.longitudeAddress = longitudeAddress;
+	}
+
+	public Double getLatitudeAddress() {
+		return latitudeAddress;
+	}
+
+	public void setLatitudeAddress(Double latitudeAddress) {
+		this.latitudeAddress = latitudeAddress;
+	}
+
+	public Double getLongitudeCurrentPosition() {
+		return longitudeCurrentPosition;
+	}
+
+	public void setLongitudeCurrentPosition(Double longitudeCurrentPosition) {
+		this.longitudeCurrentPosition = longitudeCurrentPosition;
+	}
+
+	public Double getLatitudeCurrentPosition() {
+		return latitudeCurrentPosition;
+	}
+
+	public void setLatitudeCurrentPosition(Double latitudeCurrentPosition) {
+		this.latitudeCurrentPosition = latitudeCurrentPosition;
+	}
+
+	public Long getJobyerOfferId() {
+		return jobyerOfferId;
+	}
+
+	public void setJobyerOfferId(Long jobyerOfferId) {
+		this.jobyerOfferId = jobyerOfferId;
 	}
 
 }

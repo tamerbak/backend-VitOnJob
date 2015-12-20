@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,7 +34,7 @@ public class JobyerAddress implements Serializable {
 	@Column(name = "IS_DEPART_TO_WORK_ADDRESS")
 	private Boolean isDepartToWorkAddress;
 
-	@ManyToMany(mappedBy = "listJobyerAddress")
+	@ManyToMany(mappedBy = "listJobyerAddress", fetch = FetchType.LAZY)
 	private Set<Jobyer> listJobyer;
 
 	@ManyToOne

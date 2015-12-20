@@ -29,7 +29,7 @@ public class Agenda implements Serializable {
 	@Column(name = "LIBELLE")
 	private String libelle;
 
-	@OneToMany(mappedBy = "agenda", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "agenda", fetch = FetchType.EAGER)
 	private Set<Disponibilite> listDisponibilites;
 
 	public Long getId() {

@@ -2,6 +2,8 @@ package com.vitonjob.dto;
 
 import java.io.Serializable;
 
+import com.vitonjob.utils.DateUtils;
+
 public class AvailabilityDTO implements Serializable {
 
 	/**
@@ -9,15 +11,23 @@ public class AvailabilityDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Integer value;
+	private Long value;
 
 	private String text;
 
-	public Integer getValue() {
+	public AvailabilityDTO(Long valueInSecondes) {
+		this.value = valueInSecondes / 60;
+		text = DateUtils.getDurationTextFromSecondes(valueInSecondes);
+	}
+
+	public AvailabilityDTO() {
+	}
+
+	public Long getValue() {
 		return value;
 	}
 
-	public void setValue(Integer value) {
+	public void setValue(Long value) {
 		this.value = value;
 	}
 

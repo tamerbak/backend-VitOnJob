@@ -16,9 +16,9 @@ public class EntrepriseDTO implements Serializable {
 
 	private List<OfferDTO> offers;
 
-	private Integer longitude;
+	private Double longitude;
 
-	private Integer latitude;
+	private Double latitude;
 
 	private Long entrepriseAddressId;
 
@@ -30,7 +30,7 @@ public class EntrepriseDTO implements Serializable {
 		this.name = name;
 	}
 
-	public EntrepriseDTO(Long entrepriseAddressId, Integer longitude, Integer latitude) {
+	public EntrepriseDTO(Long entrepriseAddressId, Double longitude, Double latitude) {
 		this.entrepriseAddressId = entrepriseAddressId;
 		this.longitude = longitude;
 		this.latitude = latitude;
@@ -60,28 +60,28 @@ public class EntrepriseDTO implements Serializable {
 		this.entrepriseId = entrepriseId;
 	}
 
-	public Integer getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(Integer longitude) {
-		this.longitude = longitude;
-	}
-
-	public Integer getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(Integer latitude) {
-		this.latitude = latitude;
-	}
-
 	public Long getEntrepriseAddressId() {
 		return entrepriseAddressId;
 	}
 
 	public void setEntrepriseAddressId(Long entrepriseAddressId) {
 		this.entrepriseAddressId = entrepriseAddressId;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
 	}
 
 }

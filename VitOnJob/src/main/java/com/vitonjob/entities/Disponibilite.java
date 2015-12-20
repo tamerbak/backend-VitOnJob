@@ -35,7 +35,7 @@ public class Disponibilite implements Serializable {
 	@Column(name = "DATE_DE_FIN")
 	private Date dateDeFin;
 
-	@OneToMany(mappedBy = "disponibilite", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "disponibilite", fetch = FetchType.EAGER)
 	private Set<PlageHoraire> listPlageHoraire;
 
 	@ManyToOne
