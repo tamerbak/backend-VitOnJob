@@ -33,6 +33,8 @@ public class JobyerOfferDTO implements Serializable, Comparable<JobyerOfferDTO> 
 
 	private AvailabilityDTO availability;
 
+	private Double matching;
+
 	public JobyerOfferDTO(Long jobyerOfferId, String jobyerName, Long jobyerId, Long jobyerAddressId,
 			Double longitudeAddress, Double latitudeAddress, Double longitudeCurrentPosition,
 			Double latitudeCurrentPosition) {
@@ -100,6 +102,15 @@ public class JobyerOfferDTO implements Serializable, Comparable<JobyerOfferDTO> 
 
 	@Override
 	public int compareTo(JobyerOfferDTO o) {
+		if (this.getAvailability() == o.getAvailability()) {
+			return 0;
+		}
+		if (this.getAvailability() == null) {
+			return -1;
+		}
+		if (o.getAvailability() == null) {
+			return 1;
+		}
 		return this.getAvailability().getValue().compareTo(o.getAvailability().getValue());
 	}
 
@@ -157,6 +168,14 @@ public class JobyerOfferDTO implements Serializable, Comparable<JobyerOfferDTO> 
 
 	public void setJobyerOfferId(Long jobyerOfferId) {
 		this.jobyerOfferId = jobyerOfferId;
+	}
+
+	public Double getMatching() {
+		return matching;
+	}
+
+	public void setMatching(Double matching) {
+		this.matching = matching;
 	}
 
 }

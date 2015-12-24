@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,8 +29,8 @@ public class Indispensable implements Serializable {
 	@Column(name = "LIBELLE")
 	private String libelle;
 
-	@ManyToMany(mappedBy = "listIndispensable")
-	private Set<Jobyer> myJobyer;
+	@ManyToMany(mappedBy = "listIndispensable", fetch = FetchType.LAZY)
+	private Set<Jobyer> jobyers;
 
 	public Long getId() {
 		return id;
@@ -47,12 +48,12 @@ public class Indispensable implements Serializable {
 		this.libelle = libelle;
 	}
 
-	public Set<Jobyer> getMyJobyer() {
-		return myJobyer;
+	public Set<Jobyer> getJobyers() {
+		return jobyers;
 	}
 
-	public void setMyJobyer(Set<Jobyer> myJobyer) {
-		this.myJobyer = myJobyer;
+	public void setJobyers(Set<Jobyer> jobyers) {
+		this.jobyers = jobyers;
 	}
 
 }
