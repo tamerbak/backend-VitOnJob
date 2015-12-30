@@ -37,6 +37,9 @@ public class IndexationEmployeur implements Serializable {
 	@JoinColumn(name = "EMPLOYEUR_ID")
 	private Employeur employeur;
 
+	@Column(name = "INDEXE")
+	private Long index;
+
 	public Long getId() {
 		return id;
 	}
@@ -59,6 +62,14 @@ public class IndexationEmployeur implements Serializable {
 
 	public void setEmployeur(Employeur employeur) {
 		this.employeur = employeur;
+	}
+
+	public Long getIndex() {
+		return index;
+	}
+
+	public void setIndex(Long index) {
+		this.index = index;
 	}
 
 }

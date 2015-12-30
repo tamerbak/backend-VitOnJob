@@ -37,6 +37,9 @@ public class IndexationJobyer implements Serializable {
 	@JoinColumn(name = "JOBYER_ID")
 	private Jobyer jobyer;
 
+	@Column(name="INDEXE")
+	private Long index;
+	
 	public Long getId() {
 		return id;
 	}
@@ -59,6 +62,14 @@ public class IndexationJobyer implements Serializable {
 
 	public void setJobyer(Jobyer jobyer) {
 		this.jobyer = jobyer;
+	}
+
+	public Long getIndex() {
+		return index;
+	}
+
+	public void setIndex(Long index) {
+		this.index = index;
 	}
 
 }

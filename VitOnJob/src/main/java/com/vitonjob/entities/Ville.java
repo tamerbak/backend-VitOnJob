@@ -41,4 +41,36 @@ public class Ville implements Serializable {
 					@JoinColumn(name = "CODE_POSTAL_ID", nullable = false) })
 	private Set<CodePostal> listCodePostal;
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNom() {
+		return Nom;
+	}
+
+	public void setNom(String nom) {
+		Nom = nom;
+	}
+
+	public Pays getPays() {
+		return pays;
+	}
+
+	public void setPays(Pays pays) {
+		this.pays = pays;
+	}
+
+	public Set<CodePostal> getListCodePostal() {
+		return listCodePostal;
+	}
+
+	public void setListCodePostal(Set<CodePostal> listCodePostal) {
+		this.listCodePostal = listCodePostal;
+	}
+
 }
