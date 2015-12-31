@@ -1,6 +1,5 @@
 package com.vitonjob.rest;
 
-import java.util.Base64;
 import java.util.List;
 
 import javax.ws.rs.GET;

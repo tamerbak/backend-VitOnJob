@@ -2,7 +2,6 @@ package com.vitonjob.dao;
 
 import java.util.List;
 
-import com.vitonjob.entities.IndexationEmployeur;
 import com.vitonjob.entities.IndexationJobyer;
 import com.vitonjob.enums.TableIndexationEnum;
 
