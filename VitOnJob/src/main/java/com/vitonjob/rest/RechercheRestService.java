@@ -1,7 +1,9 @@
 package com.vitonjob.rest;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -16,6 +18,7 @@ import com.vitonjob.dao.IIndexationEmployeurDAO;
 import com.vitonjob.dao.IIndexationJobyerDAO;
 import com.vitonjob.dao.IJobDAO;
 import com.vitonjob.dao.ILanguageDAO;
+import com.vitonjob.dao.IMotCleDAO;
 import com.vitonjob.dao.IPaysDAO;
 import com.vitonjob.dao.IVilleDAO;
 import com.vitonjob.dto.RechercheEmployeurDTO;
@@ -24,6 +27,7 @@ import com.vitonjob.entities.IndexationEmployeur;
 import com.vitonjob.entities.IndexationJobyer;
 import com.vitonjob.entities.Job;
 import com.vitonjob.entities.Language;
+import com.vitonjob.entities.MotCle;
 import com.vitonjob.entities.Pays;
 import com.vitonjob.entities.Ville;
 import com.vitonjob.enums.TableIndexationEnum;
@@ -36,8 +40,9 @@ public class RechercheRestService {
 	/*
 	 * Mots cles à supprimer
 	 */
-	private static final String[] todel = { "le", "la", "l'", "les", "de", "du", "des", "d'", "pour", "par", "dans",
-			"je", "tu", "il", "elle", "nous", "vous", "ils", "elles", "besoin" };
+	// private static final String[] todel = { "le", "la", "l'", "les", "de",
+	// "du", "des", "d'", "pour", "par", "dans",
+	// "je", "tu", "il", "elle", "nous", "vous", "ils", "elles", "besoin" };
 
 	@Autowired
 	private IPaysDAO paysDAO;
@@ -51,35 +56,16 @@ public class RechercheRestService {
 	private IIndexationEmployeurDAO indexationEmployeurDAO;
 	@Autowired
 	private IIndexationJobyerDAO indexationJobyerDAO;
+	@Autowired
+	private IMotCleDAO motCleDAO;
 
 	@GET
 	@Path("/rechercheEmployeur")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<RechercheEmployeurDTO> rechercheEmployeur(@QueryParam("query") String query) {
-		List<RechercheEmployeurDTO> results = new ArrayList<RechercheEmployeurDTO>();
+	public Set<RechercheEmployeurDTO> rechercheEmployeur(@QueryParam("query") String query) {
+		Set<RechercheEmployeurDTO> results = new HashSet<>();
 
-		// Tokenize query
-		String tq = query.toLowerCase().trim().replaceAll(" ", "#").replaceAll(";", "#").replaceAll(",", "#")
-				.replaceAll("/.", "#");
-		tq = tq.replaceAll("##", "#");
-		tq = tq.replaceAll("##", "#");
-		tq = tq.replaceAll("##", "#");
-		String[] tokens = tq.split("#");
-		List<String> listConcepts = new ArrayList<String>();
-		boolean found;
-		for (String t : tokens) {
-			found = false;
-			for (int i = 0; i < todel.length; i++) {
-				if (t.equals(todel[i])) {
-					found = true;
-					break;
-				}
-			}
-
-			if (found)
-				continue;
-			listConcepts.add(t);
-		}
+		List<String> listConcepts = getListConcepts(query);
 
 		if (CollectionUtils.isNotEmpty(listConcepts)) {
 			List<Long> pays = loadPaysIndexes(listConcepts);
@@ -87,68 +73,32 @@ public class RechercheRestService {
 			List<Long> jobs = loadJobsIndexes(listConcepts);
 			List<Long> languages = loadLanguageIndexes(listConcepts);
 
-			List<IndexationEmployeur> indexes;
+			List<RechercheEmployeurDTO> indexes;
 			if (CollectionUtils.isNotEmpty(pays)) {
 				indexes = indexationEmployeurDAO.findIndexationsByIndexes(pays, TableIndexationEnum.PAYS);
-				for (IndexationEmployeur i : indexes) {
-					found = false;
-					for (RechercheEmployeurDTO e : results) {
-						if (e.getId() == i.getEmployeur().getId()) {
-							found = true;
-							break;
-						}
-					}
-					if (found)
-						continue;
-					results.add(new RechercheEmployeurDTO(i.getEmployeur()));
+				if (CollectionUtils.isNotEmpty(indexes)) {
+					results.addAll(indexes);
 				}
 			}
 
 			if (CollectionUtils.isNotEmpty(villes)) {
 				indexes = indexationEmployeurDAO.findIndexationsByIndexes(villes, TableIndexationEnum.VILLE);
-				for (IndexationEmployeur i : indexes) {
-					found = false;
-					for (RechercheEmployeurDTO e : results) {
-						if (e.getId() == i.getEmployeur().getId()) {
-							found = true;
-							break;
-						}
-					}
-					if (found)
-						continue;
-					results.add(new RechercheEmployeurDTO(i.getEmployeur()));
+				if (CollectionUtils.isNotEmpty(indexes)) {
+					results.addAll(indexes);
 				}
 			}
 
 			if (CollectionUtils.isNotEmpty(jobs)) {
 				indexes = indexationEmployeurDAO.findIndexationsByIndexes(jobs, TableIndexationEnum.COMPETENCE);
-				for (IndexationEmployeur i : indexes) {
-					found = false;
-					for (RechercheEmployeurDTO e : results) {
-						if (e.getId() == i.getEmployeur().getId()) {
-							found = true;
-							break;
-						}
-					}
-					if (found)
-						continue;
-					results.add(new RechercheEmployeurDTO(i.getEmployeur()));
+				if (CollectionUtils.isNotEmpty(indexes)) {
+					results.addAll(indexes);
 				}
 			}
 
 			if (CollectionUtils.isNotEmpty(languages)) {
 				indexes = indexationEmployeurDAO.findIndexationsByIndexes(languages, TableIndexationEnum.LANGUE);
-				for (IndexationEmployeur i : indexes) {
-					found = false;
-					for (RechercheEmployeurDTO e : results) {
-						if (e.getId() == i.getEmployeur().getId()) {
-							found = true;
-							break;
-						}
-					}
-					if (found)
-						continue;
-					results.add(new RechercheEmployeurDTO(i.getEmployeur()));
+				if (CollectionUtils.isNotEmpty(indexes)) {
+					results.addAll(indexes);
 				}
 			}
 		}
@@ -158,8 +108,60 @@ public class RechercheRestService {
 	@GET
 	@Path("/rechercheJobyer")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<RechercheJobyerDTO> rechercheJobyer(@QueryParam("query") String query) {
-		List<RechercheJobyerDTO> results = new ArrayList<RechercheJobyerDTO>();
+	public Set<RechercheJobyerDTO> rechercheJobyer(@QueryParam("query") String query) {
+		Set<RechercheJobyerDTO> results = new HashSet<>();
+
+		List<String> listConcepts = getListConcepts(query);
+
+		if (CollectionUtils.isNotEmpty(listConcepts)) {
+			List<Long> pays = loadPaysIndexes(listConcepts);
+			List<Long> villes = loadVillesIndexes(listConcepts);
+			List<Long> jobs = loadJobsIndexes(listConcepts);
+			List<Long> languages = loadLanguageIndexes(listConcepts);
+
+			List<RechercheJobyerDTO> indexes;
+			if (CollectionUtils.isNotEmpty(pays)) {
+				indexes = indexationJobyerDAO.findIndexationsByIndexes(pays, TableIndexationEnum.PAYS);
+				if (CollectionUtils.isNotEmpty(indexes)) {
+					results.addAll(indexes);
+				}
+			}
+
+			if (CollectionUtils.isNotEmpty(villes)) {
+				indexes = indexationJobyerDAO.findIndexationsByIndexes(villes, TableIndexationEnum.VILLE);
+				if (CollectionUtils.isNotEmpty(indexes)) {
+					results.addAll(indexes);
+				}
+			}
+
+			if (CollectionUtils.isNotEmpty(jobs)) {
+				indexes = indexationJobyerDAO.findIndexationsByIndexes(jobs, TableIndexationEnum.COMPETENCE);
+				if (CollectionUtils.isNotEmpty(indexes)) {
+					results.addAll(indexes);
+				}
+			}
+
+			if (CollectionUtils.isNotEmpty(languages)) {
+				indexes = indexationJobyerDAO.findIndexationsByIndexes(languages, TableIndexationEnum.LANGUE);
+				if (CollectionUtils.isNotEmpty(indexes)) {
+					results.addAll(indexes);
+				}
+			}
+		}
+		return results;
+	}
+
+	/**
+	 * récupéra la liste des mot à prendre en compte lors de la recherche après
+	 * la suppression des mots clés inutiles.
+	 * 
+	 * @param query
+	 * @return
+	 */
+	private List<String> getListConcepts(String query) {
+		List<String> listConcepts = new ArrayList<String>();
+
+		List<String> wordsToDelete = motCleDAO.getAllMotsCle();
 
 		// Tokenize query
 		String tq = query.toLowerCase().trim().replaceAll(" ", "#").replaceAll(";", "#").replaceAll(",", "#")
@@ -168,12 +170,12 @@ public class RechercheRestService {
 		tq = tq.replaceAll("##", "#");
 		tq = tq.replaceAll("##", "#");
 		String[] tokens = tq.split("#");
-		List<String> listConcepts = new ArrayList<String>();
+
 		boolean found;
 		for (String t : tokens) {
 			found = false;
-			for (int i = 0; i < todel.length; i++) {
-				if (t.equals(todel[i])) {
+			for (String word : wordsToDelete) {
+				if (t.equals(word)) {
 					found = true;
 					break;
 				}
@@ -183,79 +185,7 @@ public class RechercheRestService {
 				continue;
 			listConcepts.add(t);
 		}
-
-		if (CollectionUtils.isNotEmpty(listConcepts)) {
-			List<Long> pays = loadPaysIndexes(listConcepts);
-			List<Long> villes = loadVillesIndexes(listConcepts);
-			List<Long> jobs = loadJobsIndexes(listConcepts);
-			List<Long> languages = loadLanguageIndexes(listConcepts);
-
-			List<IndexationJobyer> indexes;
-			if (CollectionUtils.isNotEmpty(pays)) {
-				indexes = indexationJobyerDAO.findIndexationsByIndexes(pays, TableIndexationEnum.PAYS);
-				for (IndexationJobyer i : indexes) {
-					found = false;
-					for (RechercheJobyerDTO e : results) {
-						if (e.getId() == i.getJobyer().getId()) {
-							found = true;
-							break;
-						}
-					}
-					if (found)
-						continue;
-					results.add(new RechercheJobyerDTO(i.getJobyer()));
-				}
-			}
-
-			if (CollectionUtils.isNotEmpty(villes)) {
-				indexes = indexationJobyerDAO.findIndexationsByIndexes(villes, TableIndexationEnum.VILLE);
-				for (IndexationJobyer i : indexes) {
-					found = false;
-					for (RechercheJobyerDTO e : results) {
-						if (e.getId() == i.getJobyer().getId()) {
-							found = true;
-							break;
-						}
-					}
-					if (found)
-						continue;
-					results.add(new RechercheJobyerDTO(i.getJobyer()));
-				}
-			}
-
-			if (CollectionUtils.isNotEmpty(jobs)) {
-				indexes = indexationJobyerDAO.findIndexationsByIndexes(jobs, TableIndexationEnum.COMPETENCE);
-				for (IndexationJobyer i : indexes) {
-					found = false;
-					for (RechercheJobyerDTO e : results) {
-						if (e.getId() == i.getJobyer().getId()) {
-							found = true;
-							break;
-						}
-					}
-					if (found)
-						continue;
-					results.add(new RechercheJobyerDTO(i.getJobyer()));
-				}
-			}
-
-			if (CollectionUtils.isNotEmpty(languages)) {
-				indexes = indexationJobyerDAO.findIndexationsByIndexes(languages, TableIndexationEnum.LANGUE);
-				for (IndexationJobyer i : indexes) {
-					found = false;
-					for (RechercheJobyerDTO e : results) {
-						if (e.getId() == i.getJobyer().getId()) {
-							found = true;
-							break;
-						}
-					}
-					if (found)
-						continue;
-					results.add(new RechercheJobyerDTO(i.getJobyer()));
-				}
-			}
-		}
-		return results;
+		return listConcepts;
 	}
 
 	/*
@@ -386,6 +316,16 @@ public class RechercheRestService {
 	public void setIndexationJobyerDAO(IIndexationJobyerDAO indexationJobyerDAO) {
 		this.indexationJobyerDAO = indexationJobyerDAO;
 		this.indexationJobyerDAO.setClazz(IndexationJobyer.class);
+	}
+
+	public IMotCleDAO getMotCleDAO() {
+		return motCleDAO;
+	}
+
+	@Autowired
+	public void setMotCleDAO(IMotCleDAO motCleDAO) {
+		this.motCleDAO = motCleDAO;
+		this.motCleDAO.setClazz(MotCle.class);
 	}
 
 }

@@ -9,6 +9,9 @@
 		<property name="hibernate.connection.username">jakj</property>
 		<property name="hibernate.connection.password">ENUmaELI5H</property>
 		<property name="hibernate.connection.url">jdbc:postgresql://ns389914.ovh.net:5432/vitonjob</property>
+		<!-- <property name="hibernate.connection.username">postgres</property> -->
+		<!-- <property name="hibernate.connection.password">rachid</property> -->
+		<!-- <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/vitonjob</property> -->
 
 		<!-- <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/vitonjob</property> -->
 		<!-- <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property> -->
@@ -55,5 +58,6 @@
 		<mapping class="com.vitonjob.entities.IndexationJobyer" />
 		<mapping class="com.vitonjob.entities.CurrentPosition" />
 		<mapping class="com.vitonjob.entities.JobyerOfferContact" />
+		<mapping class="com.vitonjob.entities.MotCle" />
 	</session-factory>
 </hibernate-configuration>

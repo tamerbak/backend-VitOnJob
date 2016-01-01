@@ -1,6 +1,7 @@
 package com.vitonjob.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,6 +29,9 @@ public class CurrentPosition implements Serializable {
 
 	@Column(name = "LATITUDE")
 	private Double latitude;
+	
+	@Column(name = "SAVE_DATE")
+	private Date saveDate;
 
 	public Long getId() {
 		return id;
@@ -51,6 +55,14 @@ public class CurrentPosition implements Serializable {
 
 	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
+	}
+
+	public Date getSaveDate() {
+		return saveDate;
+	}
+
+	public void setSaveDate(Date saveDate) {
+		this.saveDate = saveDate;
 	}
 
 }
