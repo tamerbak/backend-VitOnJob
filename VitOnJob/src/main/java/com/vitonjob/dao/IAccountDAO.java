@@ -6,9 +6,9 @@ import com.vitonjob.entities.Account;
 public interface IAccountDAO extends IGenericDao<Account> {
 
 	/**
-	 * récupère le compte par email.
+	 * rÃ©cupÃ©re le compte par email.
 	 * 
-	 * @return le compte associé à l'email.
+	 * @return le compte associÃ© Ã  l'email.
 	 */
 	Account findByLogin(String email);
 

@@ -1,7 +1,7 @@
 package com.vitonjob.enums;
 
 /**
- * Enumération contenant les valeurs possible de la table indexée.
+ * EnumÃ©ration contenant les valeurs possible de la table indexÃ©e.
  *
  */
 public enum TableIndexationEnum {

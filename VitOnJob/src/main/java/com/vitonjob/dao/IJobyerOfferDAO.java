@@ -8,12 +8,12 @@ import com.vitonjob.entities.JobyerOffer;
 public interface IJobyerOfferDAO extends IGenericDao<JobyerOffer> {
 
 	/**
-	 * récupère la liste des jobyer offer par job libelle.
+	 * rÃ©cupÃ©re la liste des jobyer offer par job libelle.
 	 *
 	 * @param libelleJob
-	 *            le libellé du job.
+	 *            le libellÃ© du job.
 	 * @param maxResults
-	 *            le nombre maximale des résultats à récupérer.
+	 *            le nombre maximale des rÃ©sultats Ã  rÃ©cupÃ©rer.
 	 * @return {@link List} des {@link JobyerOfferDTO}
 	 */
 	List<JobyerOfferDTO> getListJobyerOfferByLibelleJob(String libelleJob, int maxResults);

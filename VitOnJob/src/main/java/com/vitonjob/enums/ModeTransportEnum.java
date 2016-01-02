@@ -1,7 +1,7 @@
 package com.vitonjob.enums;
 
 /**
- * Enumération contenant les valeurs possibles du mode de transport.
+ * EnumÃ©ration contenant les valeurs possibles du mode de transport.
  *
  */
 public enum ModeTransportEnum {

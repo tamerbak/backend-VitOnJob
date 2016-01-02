@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -16,9 +17,13 @@ import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
+import com.sun.jersey.api.client.WebResource;
 import com.vitonjob.dao.IAgendaDAO;
+import com.vitonjob.dao.IDistanceDAO;
 import com.vitonjob.dao.IEntrepriseAddressDAO;
 import com.vitonjob.dao.IEntrepriseDAO;
 import com.vitonjob.dao.IIndispensableDAO;
@@ -34,6 +39,7 @@ import com.vitonjob.dto.JobyerOfferDTO;
 import com.vitonjob.dto.RequiredDTO;
 import com.vitonjob.entities.Agenda;
 import com.vitonjob.entities.Disponibilite;
+import com.vitonjob.entities.Distance;
 import com.vitonjob.entities.Entreprise;
 import com.vitonjob.entities.EntrepriseAddress;
 import com.vitonjob.entities.Indispensable;
@@ -64,6 +70,9 @@ public class JobyerOfferRestService {
 
 	@Autowired
 	private ITimePerTransportDAO timePerTransportDAO;
+
+	@Autowired
+	private IDistanceDAO distanceDAO;
 
 	@Autowired
 	private GoogleApiService googleApiService;
@@ -110,7 +119,7 @@ public class JobyerOfferRestService {
 				return null;
 			}
 
-			// Récupération de 200 jobyer offers correspondant au libellé job.
+			// RÃ©cupÃ©ration de 200 jobyer offers correspondant au libellÃ© job.
 			jobyersOffers = jobyerOfferDAO.getListJobyerOfferByLibelleJob(libelleJob, 200);
 
 			// Calcul de time per transport entre l'adresse du jobyer offer et
@@ -137,40 +146,59 @@ public class JobyerOfferRestService {
 		// Google
 		// https://maps.googleapis.com/maps/api/distancematrix/json?origins=latitude,longitude&destinations=latitude,longitude&mode=driving
 		if (timePerTransport == null) {
-			timePerTransport = googleApiService.getDurationBetweenTwoAddresses(
+			Map<String, Double> durantionAndDistanceMap = googleApiService.getDurationAndDistanceBetweenTwoAddresses(
 					jobyerOffer.getLatitude() + "," + jobyerOffer.getLongitude(),
 					entrepriseAddress.getAdresse().getLatitude() + "," + entrepriseAddress.getAdresse().getLongitude(),
 					modeTransport.getLibelle());
+			timePerTransport = durantionAndDistanceMap.get(GoogleApiService.DURATION_KEY);
 
 			// On enregistre le time per transport dans la base de
-			// données
-			TimePerTransport timePerTransportToSave = new TimePerTransport();
-			timePerTransportToSave.setValeur(timePerTransport);
-			timePerTransportToSave.setEntrepriseAddress(entrepriseAddress);
-			JobyerAddress jobyerAddress = jobyerAddressDAO.findOne(jobyerOffer.getJobyerAddressId());
-			timePerTransportToSave.setJobyerAddress(jobyerAddress);
-			timePerTransportToSave.setTransport(modeTransport);
-			timePerTransportDAO.create(timePerTransportToSave);
+			// donnÃ©es
+			JobyerAddress jobyerAddress = null;
+			if (timePerTransport != null) {
+				TimePerTransport timePerTransportToSave = new TimePerTransport();
+				timePerTransportToSave.setValeur(timePerTransport);
+				timePerTransportToSave.setEntrepriseAddress(entrepriseAddress);
+				jobyerAddress = jobyerAddressDAO.findOne(jobyerOffer.getJobyerAddressId());
+				timePerTransportToSave.setJobyerAddress(jobyerAddress);
+				timePerTransportToSave.setTransport(modeTransport);
+				timePerTransportDAO.create(timePerTransportToSave);
+			}
+
+			Double distance = durantionAndDistanceMap.get(GoogleApiService.DISTANCE_KEY);
+
+			// On enregistre la distance dans la base de
+			// donnÃ©es
+			if (distance != null) {
+				Distance distanceToSave = new Distance();
+				distanceToSave.setValeur(distance);
+				distanceToSave.setEntrepriseAddress(entrepriseAddress);
+				if (jobyerAddress == null) {
+					jobyerAddress = jobyerAddressDAO.findOne(jobyerOffer.getJobyerAddressId());
+				}
+				distanceToSave.setJobyerAddress(jobyerAddress);
+				distanceDAO.create(distanceToSave);
+			}
 		}
 
-		// Calcul de la disponibilité du jobyer : la diffrence entre la
-		// datetime de début de la plus prôche disponibilité (agenda du
+		// Calcul de la disponibilitÃ© du jobyer : la diffrence entre la
+		// datetime de dÃ©but de la plus proche disponibilitÃ© (agenda du
 		// jobyer) du jobyer et la datetime courante (now)
 		Agenda agenda = agendaDAO.getAgendaByJobyer(jobyerOffer.getJobyerId());
 
-		Long dureeAvantDisponibilite = getDureeAvantDisponibilite(agenda, new Date());
+		Long dureeAvantDisponibilite = getDureeAvantDisponibilite(agenda);
 
 		jobyerOffer.setAvailability(new AvailabilityDTO(timePerTransport.intValue() + dureeAvantDisponibilite));
 
-		// Set la valeur de on : est ce que l'employeur a déjà consulté
+		// Set la valeur de on : est ce que l'employeur a dÃ©jÃ  consultÃ©
 		// le jobyer offer
 		jobyerOffer.setOn(jobyerOfferContactDAO.countContactByEntreprise(jobyerOffer.getJobyerOfferId(),
 				Long.valueOf(idEntreprise)) > 0);
 	}
 
-	private Long getDureeAvantDisponibilite(Agenda agenda, Date now) {
+	private Long getDureeAvantDisponibilite(Agenda agenda) {
 		Long duree = null;
-		Date toDay = new Date();
+		Date now = new Date();
 		if (CollectionUtils.isNotEmpty(agenda.getListDisponibilites())) {
 			for (Disponibilite disponibilite : agenda.getListDisponibilites()) {
 				if (disponibilite.getDateDeFin().before(now)) {
@@ -185,10 +213,10 @@ public class JobyerOfferRestService {
 						while (date.before(disponibilite.getDateDeFin()) || date.equals(disponibilite.getDateDeFin())) {
 							dayName = DateUtils.getDayName(date);
 							if (isDayInRepetition(plageHoraire.getRepetition(), dayName)
-									&& toDay.before(DateUtils.getDateTime(date, plageHoraire.getHeureDeFin()))) {
+									&& now.before(DateUtils.getDateTime(date, plageHoraire.getHeureDeFin()))) {
 								dateDebutPossible = DateUtils.getDateTime(date, plageHoraire.getHeureDeDebut());
-								if (toDay.before(dateDebutPossible)) {
-									return DateUtils.getDuration(toDay, dateDebutPossible);
+								if (now.before(dateDebutPossible)) {
+									return DateUtils.getDuration(now, dateDebutPossible);
 								} else {
 									return 0L;
 								}
@@ -248,7 +276,7 @@ public class JobyerOfferRestService {
 				return null;
 			}
 
-			// Récupération de 200 jobyer offers correspondant au libellé job.
+			// RÃ©cupÃ©ration de 200 jobyer offers correspondant au libellÃ© job.
 			jobyersOffers = jobyerOfferDAO.getListJobyerOfferByLibelleJob(libelleJob, 200);
 
 			// Calcul du matching pour chaque jobyer
@@ -367,7 +395,7 @@ public class JobyerOfferRestService {
 				return null;
 			}
 
-			// Récupération de 200 jobyer offers correspondant au libellé job.
+			// RÃ©cupÃ©ration de 200 jobyer offers correspondant au libellÃ© job.
 			jobyersOffers = jobyerOfferDAO.getListJobyerOfferByLibelleJob(libelleJob, 200);
 
 			// Calcul du matching pour chaque jobyer
@@ -410,28 +438,25 @@ public class JobyerOfferRestService {
 	}
 
 	public static void main(String[] args) throws UniformInterfaceException, ClientHandlerException, JSONException {
-		Level requiredLevel = new Level();
-		requiredLevel.setId(3L);
+		// Level requiredLevel = new Level();
+		// requiredLevel.setId(3L);
+		//
+		// Level level = new Level();
+		// level.setId(4L);
+		//
+		// Double d = getJobyerMark(requiredLevel, level);
+		// System.out.println(d);
+		Client client = Client.create();
 
-		Level level = new Level();
-		level.setId(4L);
+		WebResource webResource = client
+				.resource("http://localhost:8080/VitOnJob/rest/common/jobyerOffer/getByLibelleJobMatching");
 
-		Double d = getJobyerMark(requiredLevel, level);
-		System.out.println(d);
-		// Client client = Client.create();
-		//
-		// WebResource webResource = client
-		// .resource("http://localhost:8080/VitOnJob/rest/common/jobyerOffer/getByLibelleJobMatching");
-		//
-		// String requiredLanguages =
-		// "{\"requiredId\":\"1\",\"requiredLevelId\":\"1\",\"requiredPerCent\":\"100\"}";
-		//
-		// ClientResponse response = webResource.queryParam("requiredLanguages",
-		// requiredLanguages)
-		// .header("Authorization", "Basic " +
-		// StringUtils.encode64("rachid@test.com:123456"))
-		// .accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-		// System.out.println(response.getStatus());
+		String requiredLanguages = "{\"requiredId\":\"1\",\"requiredLevelId\":\"1\",\"requiredPerCent\":\"100\"}";
+
+		ClientResponse response = webResource.queryParam("requiredLanguages", requiredLanguages)
+				.header("Authorization", "Basic " + StringUtils.encode64("rachid@test.com:123456"))
+				.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+		System.out.println(response.getStatus());
 
 	}
 
@@ -541,6 +566,16 @@ public class JobyerOfferRestService {
 	public void setIndispensableDAO(IIndispensableDAO indispensableDAO) {
 		this.indispensableDAO.setClazz(Indispensable.class);
 		this.indispensableDAO = indispensableDAO;
+	}
+
+	public IDistanceDAO getDistanceDAO() {
+		return distanceDAO;
+	}
+
+	@Autowired
+	public void setDistanceDAO(IDistanceDAO distanceDAO) {
+		this.distanceDAO = distanceDAO;
+		this.distanceDAO.setClazz(Distance.class);
 	}
 
 }

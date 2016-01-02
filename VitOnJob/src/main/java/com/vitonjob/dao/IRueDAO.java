@@ -8,7 +8,7 @@ import com.vitonjob.entities.Rue;
 public interface IRueDAO extends IGenericDao<Rue> {
 
 	/**
-	 * récupère toutes les rues.
+	 * rÃ©cupÃ©re toutes les rues.
 	 * 
 	 * @return List des rues.
 	 */

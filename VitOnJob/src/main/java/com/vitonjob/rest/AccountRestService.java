@@ -70,7 +70,7 @@ public class AccountRestService {
 				LoginDTO loginDTO = new LoginDTO(jsonLogin);
 				if (StringUtils.isEmpty(loginDTO.getPassword())
 						|| (StringUtils.isEmpty(loginDTO.getEmail()) && StringUtils.isEmpty(loginDTO.getTelephone()))) {
-					throw new IllegalArgumentException("Les données du login sont invalides.");
+					throw new IllegalArgumentException("Les donnÃ©es du login sont invalides.");
 				}
 
 				if ("employeur".equals(loginDTO.getRole())) {
@@ -85,12 +85,12 @@ public class AccountRestService {
 					}
 
 					if (employeur != null) {
-						// Récupération de la liste des entreprises
+						// RÃ©cupÃ©ration de la liste des entreprises
 						List<EntrepriseDTO> entreprises = entrepriseDAO
 								.getEntreprisesByEmployeur(employeur.getEmployerId());
 
 						if (CollectionUtils.isNotEmpty(entreprises)) {
-							// Récupération de la liste des offres pour chaque
+							// RÃ©cupÃ©ration de la liste des offres pour chaque
 							// entreprise
 							List<OfferDTO> offers;
 
@@ -98,7 +98,7 @@ public class AccountRestService {
 								offers = offerDAO.getOffresByEntreprise(entreprise.getEntrepriseId());
 
 								if (CollectionUtils.isNotEmpty(offers)) {
-									// Récupération de la liste des practice job
+									// RÃ©cupÃ©ration de la liste des practice job
 									// et
 									// practice language pour chaque offre
 									for (OfferDTO offer : offers) {
@@ -116,7 +116,7 @@ public class AccountRestService {
 						}
 					}
 					// Si aucun compte n'existe pas avec l'email ou telephone,
-					// on en crée un.
+					// on en crÃ©e un.
 					else {
 						Long countExistingAccounts = 0L;
 						if (StringUtils.isNotEmpty(loginDTO.getEmail())) {

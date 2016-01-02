@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
@@ -20,8 +22,13 @@ import com.sun.jersey.api.client.WebResource;
 @Component("googleApiService")
 public class GoogleApiService {
 
-	public Double getDurationBetweenTwoAddresses(String origin, String destination, String modeTransport) {
-		Double duration = null;
+	public static final String DURATION_KEY = "duration";
+
+	public static final String DISTANCE_KEY = "distance";
+
+	public Map<String, Double> getDurationAndDistanceBetweenTwoAddresses(String origin, String destination,
+			String modeTransport) {
+		Map<String, Double> durantionAndDistanceMap = new HashMap<>();
 		Client client = Client.create();
 
 		WebResource webResource = client.resource("https://maps.googleapis.com/maps/api/distancematrix/json");
@@ -46,13 +53,19 @@ public class GoogleApiService {
 				if (jsonArray != null && jsonArray.length() > 0) {
 					jsonArray = ((JSONObject) jsonArray.get(0)).getJSONArray("elements");
 					if (jsonArray != null && jsonArray.length() > 0) {
+						// setting duration
 						jsonObject = ((JSONObject) jsonArray.get(0)).getJSONObject("duration");
 						if (jsonObject != null) {
-							return jsonObject.getDouble("value");
+							durantionAndDistanceMap.put(DURATION_KEY, jsonObject.getDouble("value"));
+						}
+
+						// setting distance
+						jsonObject = ((JSONObject) jsonArray.get(0)).getJSONObject("distance");
+						if (jsonObject != null) {
+							durantionAndDistanceMap.put(DISTANCE_KEY, jsonObject.getDouble("value"));
 						}
 					}
 				}
-
 			}
 
 		} catch (IOException e) {
@@ -61,7 +74,7 @@ public class GoogleApiService {
 			e.printStackTrace();
 		}
 
-		return duration;
+		return durantionAndDistanceMap;
 	}
 
 }

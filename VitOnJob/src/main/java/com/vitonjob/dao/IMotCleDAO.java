@@ -7,8 +7,8 @@ import com.vitonjob.entities.MotCle;
 public interface IMotCleDAO extends IGenericDao<MotCle> {
 
 	/**
-	 * récupère tous les mots clé à ne pas considérer dans la recherche
-	 * sémantique.
+	 * rÃ©cupÃ©re tous les mots clÃ© Ã  ne pas considÃ©rer dans la recherche
+	 * sÃ©mantique.
 	 * 
 	 * @return {@link List} of {@link String}.
 	 */

@@ -38,7 +38,7 @@ import com.vitonjob.utils.CollectionUtils;
 public class RechercheRestService {
 
 	/*
-	 * Mots cles à supprimer
+	 * Mots cles Ã  supprimer
 	 */
 	// private static final String[] todel = { "le", "la", "l'", "les", "de",
 	// "du", "des", "d'", "pour", "par", "dans",
@@ -152,8 +152,8 @@ public class RechercheRestService {
 	}
 
 	/**
-	 * récupéra la liste des mot à prendre en compte lors de la recherche après
-	 * la suppression des mots clés inutiles.
+	 * rÃ©cupÃ©re la liste des mot Ã  prendre en compte lors de la recherche aprÃ¨s
+	 * la suppression des mots clÃ©s inutiles.
 	 * 
 	 * @param query
 	 * @return
