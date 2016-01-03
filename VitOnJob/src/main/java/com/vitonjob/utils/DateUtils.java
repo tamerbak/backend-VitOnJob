@@ -59,6 +59,13 @@ public class DateUtils {
 		return calendar.getTime();
 	}
 
+	public static Date addOrRemoveTime(Date date, int timeType, int n) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(timeType, n);
+		return calendar.getTime();
+	}
+
 	public static String getDurationTextFromSecondes(long secondes) {
 		StringBuilder durationText = new StringBuilder();
 

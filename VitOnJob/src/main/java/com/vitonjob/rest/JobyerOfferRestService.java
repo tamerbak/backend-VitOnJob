@@ -141,6 +141,8 @@ public class JobyerOfferRestService {
 		Double timePerTransport = timePerTransportDAO.getTimePerTansportBetweenTwoAddresses(
 				jobyerOffer.getJobyerAddressId(), entrepriseAddress.getId(), Long.valueOf(modeTransport.getId()));
 
+		boolean skipAgenda = false;
+
 		// si pas de time per transport dans la base, on appelle le web
 		// service
 		// Google
@@ -163,6 +165,9 @@ public class JobyerOfferRestService {
 				timePerTransportToSave.setJobyerAddress(jobyerAddress);
 				timePerTransportToSave.setTransport(modeTransport);
 				timePerTransportDAO.create(timePerTransportToSave);
+			} else {
+				jobyerOffer.setAvailability(null);
+				skipAgenda = true;
 			}
 
 			Double distance = durantionAndDistanceMap.get(GoogleApiService.DISTANCE_KEY);
@@ -184,11 +189,17 @@ public class JobyerOfferRestService {
 		// Calcul de la disponibilité du jobyer : la diffrence entre la
 		// datetime de début de la plus proche disponibilité (agenda du
 		// jobyer) du jobyer et la datetime courante (now)
-		Agenda agenda = agendaDAO.getAgendaByJobyer(jobyerOffer.getJobyerId());
+		if (!skipAgenda) {
+			Agenda agenda = agendaDAO.getAgendaByJobyer(jobyerOffer.getJobyerId());
 
-		Long dureeAvantDisponibilite = getDureeAvantDisponibilite(agenda);
+			Long dureeAvantDisponibilite = getDureeAvantDisponibilite(agenda);
 
-		jobyerOffer.setAvailability(new AvailabilityDTO(timePerTransport.intValue() + dureeAvantDisponibilite));
+			if (dureeAvantDisponibilite != null) {
+				jobyerOffer.setAvailability(new AvailabilityDTO(timePerTransport.intValue() + dureeAvantDisponibilite));
+			} else {
+				jobyerOffer.setAvailability(null);
+			}
+		}
 
 		// Set la valeur de on : est ce que l'employeur a déjà consulté
 		// le jobyer offer

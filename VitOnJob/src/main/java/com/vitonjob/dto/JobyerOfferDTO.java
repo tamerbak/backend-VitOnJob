@@ -1,6 +1,10 @@
 package com.vitonjob.dto;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+
+import com.vitonjob.utils.DateUtils;
 
 public class JobyerOfferDTO implements Serializable, Comparable<JobyerOfferDTO> {
 
@@ -25,6 +29,8 @@ public class JobyerOfferDTO implements Serializable, Comparable<JobyerOfferDTO> 
 
 	private Double latitudeCurrentPosition;
 
+	private Date saveDateCurrentPosition;
+
 	private boolean on;
 
 	private Long jobyerAddressId;
@@ -37,7 +43,7 @@ public class JobyerOfferDTO implements Serializable, Comparable<JobyerOfferDTO> 
 
 	public JobyerOfferDTO(Long jobyerOfferId, String jobyerName, Long jobyerId, Long jobyerAddressId,
 			Double longitudeAddress, Double latitudeAddress, Double longitudeCurrentPosition,
-			Double latitudeCurrentPosition) {
+			Double latitudeCurrentPosition, Date saveDateCurrentPosition) {
 		this.jobyerOfferId = jobyerOfferId;
 		this.jobyerName = jobyerName;
 		this.jobyerId = jobyerId;
@@ -47,13 +53,16 @@ public class JobyerOfferDTO implements Serializable, Comparable<JobyerOfferDTO> 
 		this.longitudeCurrentPosition = longitudeCurrentPosition;
 		this.latitudeCurrentPosition = latitudeCurrentPosition;
 
-		if (longitudeCurrentPosition != null) {
+		boolean isCurrentPositionExpired = saveDateCurrentPosition == null
+				|| DateUtils.addOrRemoveTime(new Date(), Calendar.MINUTE, -15).after(saveDateCurrentPosition);
+
+		if (!isCurrentPositionExpired && longitudeCurrentPosition != null) {
 			this.longitude = longitudeCurrentPosition;
 		} else if (longitudeAddress != null) {
 			this.longitude = longitudeAddress;
 		}
 
-		if (latitudeCurrentPosition != null) {
+		if (!isCurrentPositionExpired && latitudeCurrentPosition != null) {
 			this.latitude = latitudeCurrentPosition;
 		} else if (latitudeAddress != null) {
 			this.latitude = latitudeAddress;
@@ -176,6 +185,14 @@ public class JobyerOfferDTO implements Serializable, Comparable<JobyerOfferDTO> 
 
 	public void setMatching(Double matching) {
 		this.matching = matching;
+	}
+
+	public Date getSaveDateCurrentPosition() {
+		return saveDateCurrentPosition;
+	}
+
+	public void setSaveDateCurrentPosition(Date saveDateCurrentPosition) {
+		this.saveDateCurrentPosition = saveDateCurrentPosition;
 	}
 
 }

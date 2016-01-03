@@ -17,7 +17,7 @@ public class JobyerOfferDAOImpl extends GenericDAOImpl<JobyerOffer>implements IJ
 	@Override
 	public List<JobyerOfferDTO> getListJobyerOfferByLibelleJob(String libelleJob, int maxResults) {
 		Query query = getCurrentSession().createQuery(
-				"SELECT new com.vitonjob.dto.JobyerOfferDTO(jOffer.id, jobyer.prenom, jobyer.id, jAddress.id, address.longitude, address.latitude,curPosition.longitude, curPosition.latitude) FROM JobyerOffer jOffer INNER JOIN jOffer.job job INNER JOIN jOffer.jobyerAddress jAddress INNER JOIN jAddress.adresse address INNER JOIN jOffer.jobyer jobyer LEFT JOIN jobyer.currentPosition curPosition WHERE upper(job.libelle) LIKE :libelleJob AND jAddress.isDepartToWorkAddress = :isDepartToWorkAddress ORDER BY jOffer.id DESC");
+				"SELECT new com.vitonjob.dto.JobyerOfferDTO(jOffer.id, jobyer.prenom, jobyer.id, jAddress.id, address.longitude, address.latitude,curPosition.longitude, curPosition.latitude, curPosition.saveDate) FROM JobyerOffer jOffer INNER JOIN jOffer.job job INNER JOIN jOffer.jobyerAddress jAddress INNER JOIN jAddress.adresse address INNER JOIN jOffer.jobyer jobyer LEFT JOIN jobyer.currentPosition curPosition WHERE upper(job.libelle) LIKE :libelleJob AND jAddress.isDepartToWorkAddress = :isDepartToWorkAddress ORDER BY jOffer.id DESC");
 		query.setParameter("libelleJob",
 				'%' + (StringUtils.isNotEmpty(libelleJob) ? libelleJob.toUpperCase() : "") + '%');
 		query.setBoolean("isDepartToWorkAddress", true);

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -72,7 +73,7 @@ public class Jobyer implements Serializable {
 	@JoinColumn(name = "NATIONALITE_ID")
 	private Nationalite nationalite;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "CURRENT_POSITION")
 	private CurrentPosition currentPosition;
 

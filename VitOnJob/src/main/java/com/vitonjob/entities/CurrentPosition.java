@@ -29,9 +29,18 @@ public class CurrentPosition implements Serializable {
 
 	@Column(name = "LATITUDE")
 	private Double latitude;
-	
+
 	@Column(name = "SAVE_DATE")
 	private Date saveDate;
+
+	public CurrentPosition() {
+	}
+
+	public CurrentPosition(Double longitude, Double latitude, Date saveDate) {
+		this.longitude = longitude;
+		this.latitude = latitude;
+		this.saveDate = saveDate;
+	}
 
 	public Long getId() {
 		return id;
