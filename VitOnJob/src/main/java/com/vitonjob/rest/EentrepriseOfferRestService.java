@@ -16,7 +16,7 @@ import com.vitonjob.entities.EntrepriseOffer;
  * Classe implementant les services rest pour les objets Rue.
  */
 @Component
-@Path("/entrepriseOffer")
+@Path("/public/entrepriseOffer")
 public class EentrepriseOfferRestService {
 
 	@Autowired
@@ -36,6 +36,15 @@ public class EentrepriseOfferRestService {
 			e.printStackTrace();
 		}
 		return entrepriseAOffrePourJob;
+	}
+
+	@GET
+	@Path("/getEntrepriseAOfferIdByJobAndEmployeur")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Long getEntrepriseAOfferIdByJobAndEmployeur(@QueryParam("idEmployeur") String idEmployeur,
+			@QueryParam("libelleJob") String libelleJob) {
+		return entrepriseOfferDAO.getEntrepriseAOfferIdByLibelleJobAndIdEmployeur(Long.valueOf(idEmployeur),
+				libelleJob);
 	}
 
 	public IEntrepriseOfferDAO getEntrepriseOfferDAO() {

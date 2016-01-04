@@ -18,4 +18,14 @@ public class EntrepriseOfferDAOImpl extends GenericDAOImpl<EntrepriseOffer>imple
 		return (Long) query.uniqueResult();
 	}
 
+	@Override
+	public Long getEntrepriseAOfferIdByLibelleJobAndIdEmployeur(Long idEmployeur, String libelleJob) {
+		Query query = getCurrentSession().createQuery(
+				"SELECT entOffer.id FROM EntrepriseOffer entOffer INNER JOIN entOffer.listPracticeJob pjob INNER JOIN entOffer.entreprise ent WHERE ent.employeur.id = :idEmployeur AND pjob.job.libelle = :libelleJob");
+		query.setParameter("idEmployeur", idEmployeur);
+		query.setParameter("libelleJob", libelleJob);
+		query.setMaxResults(1);
+		return (Long) query.uniqueResult();
+	}
+
 }

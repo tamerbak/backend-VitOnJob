@@ -30,7 +30,7 @@ public class StringUtils {
 //        return string.replaceFirst("\\d*", "");
 //    }
 //	
-//	public static void main(String[] args) {
-//		System.out.println(replaceAll("3 RUE DES 44 HETRES ZA DE CHARTRETTES"));
-//	}
+	public static void main(String[] args) {
+		System.out.println(encode64("Basic rachid@test.com:123456"));
+	}
 }
