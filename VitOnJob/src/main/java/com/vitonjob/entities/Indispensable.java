@@ -32,6 +32,9 @@ public class Indispensable implements Serializable {
 	@ManyToMany(mappedBy = "listIndispensable", fetch = FetchType.LAZY)
 	private Set<Jobyer> jobyers;
 
+	@ManyToMany(mappedBy = "listIndispensable", fetch = FetchType.LAZY)
+	private Set<EntrepriseOffer> entrepriseOffers;
+
 	public Long getId() {
 		return id;
 	}
@@ -54,6 +57,14 @@ public class Indispensable implements Serializable {
 
 	public void setJobyers(Set<Jobyer> jobyers) {
 		this.jobyers = jobyers;
+	}
+
+	public Set<EntrepriseOffer> getEntrepriseOffers() {
+		return entrepriseOffers;
+	}
+
+	public void setEntrepriseOffers(Set<EntrepriseOffer> entrepriseOffers) {
+		this.entrepriseOffers = entrepriseOffers;
 	}
 
 }

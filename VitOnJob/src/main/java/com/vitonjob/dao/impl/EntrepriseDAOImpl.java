@@ -30,4 +30,12 @@ public class EntrepriseDAOImpl extends GenericDAOImpl<Entreprise>implements IEnt
 		return (EntrepriseDTO) query.uniqueResult();
 	}
 
+	@Override
+	public Long getEntrepriseIdByOfferId(Long entrepriseOfferId) {
+		Query query = getCurrentSession().createQuery(
+				"SELECT entr.id FROM EntrepriseOffer entrOffer INNER JOIN entrOffer.entreprise entr WHERE entrOffer.id = :entrepriseOfferId");
+		query.setParameter("entrepriseOfferId", entrepriseOfferId);
+		return (Long) query.uniqueResult();
+	}
+
 }

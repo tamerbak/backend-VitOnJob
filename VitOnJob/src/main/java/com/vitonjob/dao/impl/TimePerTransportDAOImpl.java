@@ -17,6 +17,7 @@ public class TimePerTransportDAOImpl extends GenericDAOImpl<TimePerTransport>imp
 		query.setParameter("jobyerAddressId", jobyerAddressId);
 		query.setParameter("entrepriseAddressId", entrepriseAddressId);
 		query.setParameter("transportId", transportId);
+		query.setMaxResults(1);
 		return (Double) query.uniqueResult();
 	}
 

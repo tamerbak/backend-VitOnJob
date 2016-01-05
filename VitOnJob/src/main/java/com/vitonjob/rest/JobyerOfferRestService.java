@@ -26,6 +26,7 @@ import com.vitonjob.dao.IAgendaDAO;
 import com.vitonjob.dao.IDistanceDAO;
 import com.vitonjob.dao.IEntrepriseAddressDAO;
 import com.vitonjob.dao.IEntrepriseDAO;
+import com.vitonjob.dao.IEntrepriseOfferDAO;
 import com.vitonjob.dao.IIndispensableDAO;
 import com.vitonjob.dao.IJobyerAddressDAO;
 import com.vitonjob.dao.IJobyerOfferContactDAO;
@@ -42,6 +43,7 @@ import com.vitonjob.entities.Disponibilite;
 import com.vitonjob.entities.Distance;
 import com.vitonjob.entities.Entreprise;
 import com.vitonjob.entities.EntrepriseAddress;
+import com.vitonjob.entities.EntrepriseOffer;
 import com.vitonjob.entities.Indispensable;
 import com.vitonjob.entities.JobyerAddress;
 import com.vitonjob.entities.JobyerOffer;
@@ -98,6 +100,9 @@ public class JobyerOfferRestService {
 	@Autowired
 	private IIndispensableDAO indispensableDAO;
 
+	@Autowired
+	private IEntrepriseOfferDAO entrepriseOfferDAO;
+
 	@GET
 	@Path("/getByLibelleJobAndAvailability")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -126,6 +131,11 @@ public class JobyerOfferRestService {
 			// celle de l'entreprise pour chaque jobyer offer.
 			for (JobyerOfferDTO jobyerOffer : jobyersOffers) {
 				setAvailabilityMark(jobyerOffer, entrepriseAddress, modeTransport, idEntreprise);
+
+				// Set la valeur de on : est ce que l'employeur a déjà consulté
+				// le jobyer offer
+				jobyerOffer.setOn(jobyerOfferContactDAO.countContactByEntreprise(jobyerOffer.getJobyerOfferId(),
+						Long.valueOf(idEntreprise)) > 0);
 			}
 
 			Collections.sort(jobyersOffers);
@@ -200,11 +210,6 @@ public class JobyerOfferRestService {
 				jobyerOffer.setAvailability(null);
 			}
 		}
-
-		// Set la valeur de on : est ce que l'employeur a déjà consulté
-		// le jobyer offer
-		jobyerOffer.setOn(jobyerOfferContactDAO.countContactByEntreprise(jobyerOffer.getJobyerOfferId(),
-				Long.valueOf(idEntreprise)) > 0);
 	}
 
 	private Long getDureeAvantDisponibilite(Agenda agenda) {
@@ -273,27 +278,39 @@ public class JobyerOfferRestService {
 	@GET
 	@Path("/getByLibelleJobAndMatching")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<JobyerOfferDTO> getJobyersOffersByLibelleJobAndMatching(@QueryParam("libelleJob") String libelleJob,
-			@QueryParam("requiredLang") List<RequiredDTO> requiredLanguages,
-			@QueryParam("requiredJob") List<RequiredDTO> requiredJobs,
-			@QueryParam("requiredQI") List<Long> requiredQualitesIndispensables,
+	public List<JobyerOfferDTO> getJobyersOffersByLibelleJobAndMatching(
+			@QueryParam("idEntrepriseOffer") Long entrepriseOfferId,
 			@QueryParam("coefficients") CoefficientsDTO coefficients) {
+		if (entrepriseOfferId == null) {
+			return null;
+		}
+		Long idEntreprise = entrepriseDAO.getEntrepriseIdByOfferId(entrepriseOfferId);
 
 		List<JobyerOfferDTO> jobyersOffers = null;
+		List<RequiredDTO> requiredLanguages = entrepriseOfferDAO
+				.getRequiredLanguagesByEntrepriseOffer(entrepriseOfferId);
+		List<RequiredDTO> requiredJobs = entrepriseOfferDAO.getRequiredJobsByEntrepriseOffer(entrepriseOfferId);
+		List<Long> requiredQualitesIndispensables = entrepriseOfferDAO
+				.getRequiredQualitiesByEntrepriseOffer(entrepriseOfferId);
 		try {
-			if (StringUtils.isEmpty(libelleJob) || coefficients == null
+			if (coefficients == null
 					|| (CollectionUtils.isEmpty(requiredJobs) && CollectionUtils.isEmpty(requiredLanguages)
 							&& CollectionUtils.isEmpty(requiredQualitesIndispensables))) {
 				return null;
 			}
 
 			// Récupération de 200 jobyer offers correspondant au libellé job.
-			jobyersOffers = jobyerOfferDAO.getListJobyerOfferByLibelleJob(libelleJob, 200);
+			jobyersOffers = jobyerOfferDAO.getListJobyerOfferByEntrepriseOfferId(entrepriseOfferId, 200);
 
 			// Calcul du matching pour chaque jobyer
 			for (JobyerOfferDTO jobyerOffer : jobyersOffers) {
 				setMatchingMark(jobyerOffer, requiredJobs, requiredLanguages, requiredQualitesIndispensables,
 						coefficients);
+
+				// Set la valeur de on : est ce que l'employeur a déjà consulté
+				// le jobyer offer
+				jobyerOffer.setOn(jobyerOfferContactDAO.countContactByEntreprise(jobyerOffer.getJobyerOfferId(),
+						idEntreprise) > 0);
 			}
 
 			Collections.sort(jobyersOffers, new Comparator<JobyerOfferDTO>() {
@@ -382,17 +399,22 @@ public class JobyerOfferRestService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public List<JobyerOfferDTO> getJobyersOffersByLibelleJobAndAvailabilityAndMatching(
-			@QueryParam("libelleJob") String libelleJob, @QueryParam("idEntreprise") String idEntreprise,
-			@QueryParam("idModeTransport") String idModeTransport,
-			@QueryParam("requiredLang") List<RequiredDTO> requiredLanguages,
-			@QueryParam("requiredJob") List<RequiredDTO> requiredJobs,
-			@QueryParam("requiredQI") List<Long> requiredQualitesIndispensables,
+			@QueryParam("idEntreprise") String idEntreprise, @QueryParam("idModeTransport") String idModeTransport,
+			@QueryParam("idEntrepriseOffer") Long entrepriseOfferId,
 			@QueryParam("coefficients") CoefficientsDTO coefficients) {
 
+		if (entrepriseOfferId == null) {
+			return null;
+		}
+
 		List<JobyerOfferDTO> jobyersOffers = null;
+		List<RequiredDTO> requiredLanguages = entrepriseOfferDAO
+				.getRequiredLanguagesByEntrepriseOffer(entrepriseOfferId);
+		List<RequiredDTO> requiredJobs = entrepriseOfferDAO.getRequiredJobsByEntrepriseOffer(entrepriseOfferId);
+		List<Long> requiredQualitesIndispensables = entrepriseOfferDAO
+				.getRequiredQualitiesByEntrepriseOffer(entrepriseOfferId);
 		try {
-			if (StringUtils.isEmpty(libelleJob) || StringUtils.isEmpty(idEntreprise)
-					|| StringUtils.isEmpty(idModeTransport) || coefficients == null
+			if (StringUtils.isEmpty(idEntreprise) || StringUtils.isEmpty(idModeTransport) || coefficients == null
 					|| (CollectionUtils.isEmpty(requiredJobs) && CollectionUtils.isEmpty(requiredLanguages)
 							&& CollectionUtils.isEmpty(requiredQualitesIndispensables))) {
 				return null;
@@ -407,13 +429,18 @@ public class JobyerOfferRestService {
 			}
 
 			// Récupération de 200 jobyer offers correspondant au libellé job.
-			jobyersOffers = jobyerOfferDAO.getListJobyerOfferByLibelleJob(libelleJob, 200);
+			jobyersOffers = jobyerOfferDAO.getListJobyerOfferByEntrepriseOfferId(entrepriseOfferId, 20);
 
 			// Calcul du matching pour chaque jobyer
 			for (JobyerOfferDTO jobyerOffer : jobyersOffers) {
 				setAvailabilityMark(jobyerOffer, entrepriseAddress, modeTransport, idEntreprise);
 				setMatchingMark(jobyerOffer, requiredJobs, requiredLanguages, requiredQualitesIndispensables,
 						coefficients);
+
+				// Set la valeur de on : est ce que l'employeur a déjà consulté
+				// le jobyer offer
+				jobyerOffer.setOn(jobyerOfferContactDAO.countContactByEntreprise(jobyerOffer.getJobyerOfferId(),
+						Long.valueOf(idEntreprise)) > 0);
 			}
 
 			Collections.sort(jobyersOffers, new Comparator<JobyerOfferDTO>() {
@@ -587,6 +614,16 @@ public class JobyerOfferRestService {
 	public void setDistanceDAO(IDistanceDAO distanceDAO) {
 		this.distanceDAO = distanceDAO;
 		this.distanceDAO.setClazz(Distance.class);
+	}
+
+	public IEntrepriseOfferDAO getEntrepriseOfferDAO() {
+		return entrepriseOfferDAO;
+	}
+
+	@Autowired
+	public void setEntrepriseOfferDAO(IEntrepriseOfferDAO entrepriseOfferDAO) {
+		this.entrepriseOfferDAO = entrepriseOfferDAO;
+		this.entrepriseOfferDAO.setClazz(EntrepriseOffer.class);
 	}
 
 }

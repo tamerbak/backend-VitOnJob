@@ -1,5 +1,8 @@
 package com.vitonjob.dao;
 
+import java.util.List;
+
+import com.vitonjob.dto.RequiredDTO;
 import com.vitonjob.entities.EntrepriseOffer;
 
 public interface IEntrepriseOfferDAO extends IGenericDao<EntrepriseOffer> {
@@ -26,4 +29,31 @@ public interface IEntrepriseOfferDAO extends IGenericDao<EntrepriseOffer> {
 	 * @return l'id de l'entreprise offer correspondante.
 	 */
 	Long getEntrepriseAOfferIdByLibelleJobAndIdEmployeur(Long idEmployeur, String libelleJob);
+
+	/**
+	 * Gets the required languages by entreprise offer.
+	 *
+	 * @param entrepriseOfferId
+	 *            the entreprise offer id
+	 * @return the required languages by entreprise offer
+	 */
+	List<RequiredDTO> getRequiredLanguagesByEntrepriseOffer(Long entrepriseOfferId);
+
+	/**
+	 * Gets the required jobs by entreprise offer.
+	 *
+	 * @param entrepriseOfferId
+	 *            the entreprise offer id
+	 * @return the required jobs by entreprise offer
+	 */
+	List<RequiredDTO> getRequiredJobsByEntrepriseOffer(Long entrepriseOfferId);
+
+	/**
+	 * Gets the required qualities by entreprise offer.
+	 *
+	 * @param entrepriseOfferId
+	 *            the entreprise offer id
+	 * @return the required qualities by entreprise offer
+	 */
+	List<Long> getRequiredQualitiesByEntrepriseOffer(Long entrepriseOfferId);
 }

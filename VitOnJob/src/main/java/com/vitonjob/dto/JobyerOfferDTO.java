@@ -37,16 +37,22 @@ public class JobyerOfferDTO implements Serializable, Comparable<JobyerOfferDTO> 
 
 	private Long jobyerId;
 
+	private String jobyerEmail;
+
+	private String jobyerTel;
+
 	private AvailabilityDTO availability;
 
 	private Double matching;
 
-	public JobyerOfferDTO(Long jobyerOfferId, String jobyerName, Long jobyerId, Long jobyerAddressId,
-			Double longitudeAddress, Double latitudeAddress, Double longitudeCurrentPosition,
+	public JobyerOfferDTO(Long jobyerOfferId, String jobyerName, Long jobyerId, String jobyerEmail, String jobyerTel,
+			Long jobyerAddressId, Double longitudeAddress, Double latitudeAddress, Double longitudeCurrentPosition,
 			Double latitudeCurrentPosition, Date saveDateCurrentPosition) {
 		this.jobyerOfferId = jobyerOfferId;
 		this.jobyerName = jobyerName;
 		this.jobyerId = jobyerId;
+		this.jobyerEmail = jobyerEmail;
+		this.jobyerTel = jobyerTel;
 		this.jobyerAddressId = jobyerAddressId;
 		this.longitudeAddress = longitudeAddress;
 		this.latitudeAddress = latitudeAddress;
@@ -193,6 +199,22 @@ public class JobyerOfferDTO implements Serializable, Comparable<JobyerOfferDTO> 
 
 	public void setSaveDateCurrentPosition(Date saveDateCurrentPosition) {
 		this.saveDateCurrentPosition = saveDateCurrentPosition;
+	}
+
+	public String getJobyerEmail() {
+		return jobyerEmail;
+	}
+
+	public void setJobyerEmail(String jobyerEmail) {
+		this.jobyerEmail = jobyerEmail;
+	}
+
+	public String getJobyerTel() {
+		return jobyerTel;
+	}
+
+	public void setJobyerTel(String jobyerTel) {
+		this.jobyerTel = jobyerTel;
 	}
 
 }

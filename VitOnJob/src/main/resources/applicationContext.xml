@@ -16,14 +16,14 @@
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url"
-			value="jdbc:postgresql://ns389914.ovh.net:5432/vitonjob" />
+		
+		<property name="url" value="jdbc:postgresql://ns389914.ovh.net:5432/vitonjob" />
 		<property name="username" value="jakj" />
 		<property name="password" value="ENUmaELI5H" />
-		<!-- <property name="url" value="jdbc:postgresql://localhost:5432/vitonjob" 
-			/> -->
-		<!-- <property name="username" value="postgres" /> -->
-		<!-- <property name="password" value="rachid" /> -->
+
+<!-- 		<property name="url" value="jdbc:postgresql://localhost:5432/vitonjob"/> -->
+<!-- 		<property name="username" value="postgres" /> -->
+<!-- 		<property name="password" value="rachid" /> -->
 	</bean>
 
 	<!-- Hibernate 4 SessionFactory Bean definition -->

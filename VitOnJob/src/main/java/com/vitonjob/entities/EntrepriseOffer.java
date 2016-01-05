@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -53,6 +55,12 @@ public class EntrepriseOffer implements Serializable {
 
 	@OneToMany(mappedBy = "entrepriseOffer")
 	private Set<PracticeJob> listPracticeJob;
+
+	@ManyToMany
+	@JoinTable(name = "ENTREPRISE_OFFER_INDISPENSABLE", joinColumns = {
+			@JoinColumn(name = "ENTREPRISE_OFFER_ID", nullable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "INDISPENSABLE_ID", nullable = false) })
+	private Set<Indispensable> listIndispensable;
 
 	@ManyToOne
 	@JoinColumn(name = "AGENDA_ID")
@@ -136,6 +144,14 @@ public class EntrepriseOffer implements Serializable {
 
 	public void setAgenda(Agenda agenda) {
 		this.agenda = agenda;
+	}
+
+	public Set<Indispensable> getListIndispensable() {
+		return listIndispensable;
+	}
+
+	public void setListIndispensable(Set<Indispensable> listIndispensable) {
+		this.listIndispensable = listIndispensable;
 	}
 
 }

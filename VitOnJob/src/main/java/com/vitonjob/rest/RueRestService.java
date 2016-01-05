@@ -64,15 +64,12 @@ public class RueRestService {
 		// .header("Authorization", "Basic " + new
 		// String(bytesEncoded)).get(ClientResponse.class);
 
-		// ClientResponse responseMsg =
-		// webResource.path("/public/account/login").post(ClientResponse.class);
-		// String login = "{\"email\":\"" +
-		// StringUtils.encode64("rachid3@test.com") + "\",\"telephone\":\""
-		// + StringUtils.encode64("0636985471") + "\",\"password\":\"" +
-		// StringUtils.encode64("12345678")
-		// + "\",\"role\":\"" + StringUtils.encode64("employeur") + "\"}";
-		String login = "{\"email\":\"" + StringUtils.encode64("rachid@test.com") + "\",\"password\":\""
-				+ StringUtils.encode64("123456") + "\",\"role\":\"" + StringUtils.encode64("employeur") + "\"}";
+//		ClientResponse responseMsg = webResource.path("/public/account/login").post(ClientResponse.class);
+		String login = "{\"email\":\"" + StringUtils.encode64("rachid@test.com") + "\",\"telephone\":\""
+				+ StringUtils.encode64("0636985471") + "\",\"password\":\"" + StringUtils.encode64("123456")
+				+ "\",\"role\":\"" + StringUtils.encode64("employeur") + "\"}";
+//		String login = "{\"email\":\"" + StringUtils.encode64("rachid@test.com") + "\",\"password\":\""
+//				+ StringUtils.encode64("123456") + "\",\"role\":\"" + StringUtils.encode64("employeur") + "\"}";
 
 		ClientResponse response = webResource.header("login", login).type("application/json").post(ClientResponse.class,
 				null);
