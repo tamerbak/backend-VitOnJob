@@ -77,6 +77,12 @@ public class RechercheRestService {
 			if (CollectionUtils.isNotEmpty(pays)) {
 				indexes = indexationEmployeurDAO.findIndexationsByIndexes(pays, TableIndexationEnum.PAYS);
 				if (CollectionUtils.isNotEmpty(indexes)) {
+					if (CollectionUtils.isNotEmpty(results)) {
+						for (RechercheEmployeurDTO element : results) {
+						    if (!indexes.contains(element))
+						    	results.remove(element);
+						}
+					}
 					results.addAll(indexes);
 				}
 			}
@@ -84,6 +90,12 @@ public class RechercheRestService {
 			if (CollectionUtils.isNotEmpty(villes)) {
 				indexes = indexationEmployeurDAO.findIndexationsByIndexes(villes, TableIndexationEnum.VILLE);
 				if (CollectionUtils.isNotEmpty(indexes)) {
+					if (CollectionUtils.isNotEmpty(results)) {
+						for (RechercheEmployeurDTO element : results) {
+						    if (!indexes.contains(element))
+						    	results.remove(element);
+						}
+					}
 					results.addAll(indexes);
 				}
 			}
@@ -91,6 +103,12 @@ public class RechercheRestService {
 			if (CollectionUtils.isNotEmpty(jobs)) {
 				indexes = indexationEmployeurDAO.findIndexationsByIndexes(jobs, TableIndexationEnum.COMPETENCE);
 				if (CollectionUtils.isNotEmpty(indexes)) {
+					if (CollectionUtils.isNotEmpty(results)) {
+						for (RechercheEmployeurDTO element : results) {
+						    if (!indexes.contains(element))
+						    	results.remove(element);
+						}
+					}
 					results.addAll(indexes);
 				}
 			}
@@ -98,6 +116,12 @@ public class RechercheRestService {
 			if (CollectionUtils.isNotEmpty(languages)) {
 				indexes = indexationEmployeurDAO.findIndexationsByIndexes(languages, TableIndexationEnum.LANGUE);
 				if (CollectionUtils.isNotEmpty(indexes)) {
+					if (CollectionUtils.isNotEmpty(results)) {
+						for (RechercheEmployeurDTO element : results) {
+						    if (!indexes.contains(element))
+						    	results.remove(element);
+						}
+					}
 					results.addAll(indexes);
 				}
 			}
@@ -130,6 +154,12 @@ public class RechercheRestService {
 			if (CollectionUtils.isNotEmpty(villes)) {
 				indexes = indexationJobyerDAO.findIndexationsByIndexes(villes, TableIndexationEnum.VILLE);
 				if (CollectionUtils.isNotEmpty(indexes)) {
+					if (CollectionUtils.isNotEmpty(results)) {
+						for (RechercheJobyerDTO element : results) {
+						    if (!indexes.contains(element))
+						    	results.remove(element);
+						}
+					}
 					results.addAll(indexes);
 				}
 			}
@@ -137,6 +167,12 @@ public class RechercheRestService {
 			if (CollectionUtils.isNotEmpty(jobs)) {
 				indexes = indexationJobyerDAO.findIndexationsByIndexes(jobs, TableIndexationEnum.COMPETENCE);
 				if (CollectionUtils.isNotEmpty(indexes)) {
+					if (CollectionUtils.isNotEmpty(results)) {
+						for (RechercheJobyerDTO element : results) {
+						    if (!indexes.contains(element))
+						    	results.remove(element);
+						}
+					}
 					results.addAll(indexes);
 				}
 			}
@@ -144,6 +180,12 @@ public class RechercheRestService {
 			if (CollectionUtils.isNotEmpty(languages)) {
 				indexes = indexationJobyerDAO.findIndexationsByIndexes(languages, TableIndexationEnum.LANGUE);
 				if (CollectionUtils.isNotEmpty(indexes)) {
+					if (CollectionUtils.isNotEmpty(results)) {
+						for (RechercheJobyerDTO element : results) {
+						    if (!indexes.contains(element))
+						    	results.remove(element);
+						}
+					}
 					results.addAll(indexes);
 				}
 			}

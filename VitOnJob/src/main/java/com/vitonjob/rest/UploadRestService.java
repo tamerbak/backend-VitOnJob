@@ -91,7 +91,7 @@ public class UploadRestService {
 						fileName = (String) jsonData.get("fileName") + "@" + idUser ;
 					
 						//Get file content from header:
-						String fileContent = (String) jsonData.get("fileContent");
+						//String fileContent = (String) jsonData.get("fileContent");
 						data = DatatypeConverter.parseBase64Binary(stData);
 					}
 					

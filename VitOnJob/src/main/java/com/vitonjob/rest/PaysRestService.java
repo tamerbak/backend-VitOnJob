@@ -10,16 +10,10 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
+
 import com.vitonjob.dao.IPaysDAO;
-import com.vitonjob.dao.IRueDAO;
 import com.vitonjob.dto.PaysDTO;
-import com.vitonjob.dto.RueDTO;
 import com.vitonjob.entities.Pays;
-import com.vitonjob.entities.Rue;
-import com.vitonjob.utils.StringUtils;
 
 /**
  * Classe implementant les services rest pour les objets Pays.
